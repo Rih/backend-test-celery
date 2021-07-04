@@ -1,0 +1,30 @@
+[
+{
+  "model": "account.user",
+  "pk": 1,
+  "fields": {
+    "username": "root@xstock.cl",
+    "first_name": "RooT",
+    "last_name": "root",
+    "email": "root@xstock.cl",
+    "password": "pbkdf2_sha256$150000$CvQvjWtTLNSk$SDZaAVsiyOZnEqoDvsbmCL5K68I67m7Ml6TY0r/u27Q=",
+    "is_superuser": true,
+    "is_staff": true,
+    "date_joined": "2020-03-17 11:20:53"
+  }
+},
+{
+  "model": "account.user",
+  "pk": 2,
+  "fields": {
+    "username": "ifn@account.cl",
+    "first_name": "IFN",
+    "last_name": "Admin",
+    "email": "ifn@account.cl",
+    "password": "pbkdf2_sha256$150000$CvQvjWtTLNSk$SDZaAVsiyOZnEqoDvsbmCL5K68I67m7Ml6TY0r/u27Q=",
+    "is_superuser": true,
+    "is_staff": true,
+    "date_joined": "2020-03-17 11:20:53"
+  }
+}
+]

@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_extensions",
     "backend_test.utils",
+    "django.contrib.sites",
+    "captcha",
+    "account",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -66,7 +70,9 @@ ROOT_URLCONF = "backend_test.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'common-templates'),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -95,6 +101,9 @@ DATABASES = {
         "PORT": 5432,
         "CONN_MAX_AGE": 600,
         "DISABLE_SERVER_SIDE_CURSORS": True,
+        'TEST': {
+            'NAME': 'mytestdatabase',
+        },
     },
 }
 
@@ -143,10 +152,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+# STATICFILES_STORAGE = 'transcriptor.storage.StaticStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, "../collected_static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "../static")
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+LOGIN_URL = '/account/login'
 
 REST_FRAMEWORK = {
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    #'PAGE_SIZE': 10,
+    #'DEFAULT_PERMISSION_CLASSES': [
+    #    'rest_framework.permissions.IsAuthenticated',
+    #],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
@@ -235,3 +256,29 @@ LOGGING = {
         },
     },
 }
+
+SLACK_OAUTH_TOKEN = 'xoxb-2237050410850-2243278600852-d5Ru1oJxR5cXElUftiPHNmKv'
+SLACK_CHANNEL_ID = 'C02757KU9DJ' # meals
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'rodrigo.ediaz.f@gmail.com'
+SERVER_EMAIL = 'rodrigo.ediaz.f@gmail.com'
+# EMAIL_HOST = 'smtp.google.com'
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+# EMAIL_USE_SSL = True
+# EMAIL_PORT = 465  # SSL
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587  # TLS
+EMAIL_HOST_USER = 'rodrigo@sistematiza.cl'
+# xsmtpsib-b035581722003f717f6c25e75ca9e989f0d5e32910ebf50d0506e4e5ac990a46-X6xfE5wtnyRQUKk2
+EMAIL_HOST_PASSWORD = 'HF4CwUjLpkX15PfS'
+
+SITE_ID = 1
+
+CELERY_TASK_TRACK_STARTED = True
+
+# Modificar
+
+RECAPTCHA_PUBLIC_KEY = '6LeqAZcUAAAAAG2Zs9u7ZwVFm1KCdaVvOl793_A7'
+RECAPTCHA_PRIVATE_KEY = '6LeqAZcUAAAAAN_DS8RtU7vyuu0H6fAjVTev8GSN'

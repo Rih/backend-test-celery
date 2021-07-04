@@ -1,0 +1,5 @@
+Hola {{ user.get_full_name|capfirst }}
+
+{% with user.emailtoken.get_email_confirmation_url as link %}
+  Para completar su registro en la plataforma, es necesario que confirme su correo electrónico. Por favor, haga click en el siguiente enlace para completar el registro: {{ link }}
+{% endwith %}

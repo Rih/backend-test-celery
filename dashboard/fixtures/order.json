@@ -1,0 +1,12 @@
+[
+  {
+    "model": "dashboard.order",
+    "pk": 1,
+    "fields": {
+      "email": "drigox90+order@gmail.com",
+      "meal_id": 1,
+      "suggestion": "Nada"
+    }
+  }
+
+]

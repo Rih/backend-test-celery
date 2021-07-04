@@ -1,0 +1,30 @@
+[
+  {
+    "model": "dashboard.meal",
+    "pk": 1,
+    "fields": {
+      "title": "Meat with Dessert"
+    }
+  },
+  {
+    "model": "dashboard.meal",
+    "pk": 2,
+    "fields": {
+      "title": "Rice with Chicken"
+    }
+  },
+  {
+    "model": "dashboard.meal",
+    "pk": 3,
+    "fields": {
+      "title": "Spaghetti with tomato"
+    }
+  },
+  {
+    "model": "dashboard.meal",
+    "pk": 4,
+    "fields": {
+      "title": "Vegan"
+    }
+  }
+]

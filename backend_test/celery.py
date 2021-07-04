@@ -58,6 +58,7 @@ class CelerySettings:
     CELERYD_HIJACK_ROOT_LOGGER = getenv(
         "CELERYD_HIJACK_ROOT_LOGGER", default="False", coalesce=bool
     )
+    CELERY_TASK_TRACK_STARTED = True
     # Custom Component Classes (advanced)
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#custom-component-classes-advanced
     CELERYD_POOL_RESTARTS = True

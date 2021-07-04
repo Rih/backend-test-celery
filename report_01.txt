@@ -1,0 +1,32 @@
+Name                             Stmts   Miss  Cover   Missing
+--------------------------------------------------------------
+account/__init__.py                  0      0   100%
+account/admin.py                     1      0   100%
+account/apps.py                      3      3     0%   1-5
+account/exceptions.py                2      0   100%
+account/factories.py                19      0   100%
+account/forms.py                    13      0   100%
+account/models.py                   30      5    83%   26-30
+account/urls.py                      6      0   100%
+account/utils.py                    14      0   100%
+account/views.py                    89      8    91%   58, 71-73, 121-123, 129
+backend_test/__init__.py             0      0   100%
+backend_test/celery.py              34     34     0%   1-72
+backend_test/conftest.py             5      5     0%   1-8
+backend_test/envtools.py            12      0   100%
+backend_test/middleware.py          16      1    94%   9
+backend_test/urls.py                 3      0   100%
+backend_test/utils/__init__.py       0      0   100%
+backend_test/utils/healthz.py        8      1    88%   14
+dashboard/__init__.py                0      0   100%
+dashboard/admin.py                   1      0   100%
+dashboard/apps.py                    3      3     0%   1-5
+dashboard/bot.py                    46      0   100%
+dashboard/factories.py              11     11     0%   1-17
+dashboard/models.py                 14      0   100%
+dashboard/urls.py                    6      0   100%
+dashboard/views.py                  25      4    84%   34, 39-41
+gunicorn_config.py                  37     37     0%   1-64
+manage.py                           12      2    83%   11-12
+--------------------------------------------------------------
+TOTAL                              410    114    72%

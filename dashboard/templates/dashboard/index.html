@@ -1,0 +1,10 @@
+{% extends "base-admin.html" %}
+<ul>
+{% for meal in object_list %}
+    <li>
+        {{meal.title }}
+    </li>
+{% endfor %}
+    </ul>
+</body>
+</html>

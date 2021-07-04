@@ -1,0 +1,95 @@
+{% extends "base-account.html" %}
+{% load static %}
+{% block title %}
+  Registro
+{% endblock title %}
+{% block content %}
+  <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-5 d-none d-lg-block bg-register-image-2"></div>
+        <div class="col-lg-7">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Crea una cuenta!</h1>
+            </div>
+            <form class="user" action="{% url 'account:sign_up' %}" method="post">
+              {% csrf_token %}
+              {% if form.errors %}
+                {% for field in form %}
+                  {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                      <strong>{{ error|escape }}.</strong>
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              {% endif %}
+              <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  {{ form.first_name }}
+                  {% if form.first_name.errors %}
+                  <span class="dashboard-status-button utf-status-item red">
+                    <strong>{{ form.first_name.errors.0 }}</strong>
+                  </span>
+                  {% endif %}
+                </div>
+                <div class="col-sm-6">
+                  {{ form.last_name }}
+                  <span class="dashboard-status-button utf-status-item red">
+                    <strong class="text-danger">{{ form.last_name.errors.0 }}</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                {{ form.email }}
+               <span class="dashboard-status-button utf-status-item red">
+                  <strong class="text-danger">{{ form.email.errors.0 }}</strong>
+                </span>
+              </div>
+              <div class="form-group row">
+                <div class="col-12 mb-3 mb-sm-0">
+                  {{ form.password }}
+                  <span class="dashboard-status-button utf-status-item red">
+                    <strong class="text-danger">{{ form.password.errors.0 }}</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-12 d-flex justify-content-center">
+                  {{ form.captcha }}
+                </div>
+              </div>
+              <div class="form-group justify-content-center">
+                {% if form.captcha.errors %}
+                  <span class="dashboard-status-button utf-status-item red">
+                      <strong class="text-danger">{{ form.captcha.errors.0 }}</strong>
+                  </span>
+                {% endif %}
+              </div>
+              <button type="submit" class="btn btn-primary btn-user btn-block">
+                    Registrar
+              </button>
+              {% comment %}
+              <hr>
+              <a href="index.html" class="btn btn-google btn-user btn-block">
+                <i class="fab fa-google fa-fw"></i> Register with Google
+              </a>
+              <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+              </a>
+              {% endcomment %}
+            </form>
+            <hr>
+            <div class="text-center">
+              <a class="small" href="{% url 'account:reset_password' %}">Restaurar Contraseña</a>
+            </div>
+            <div class="text-center">
+              <a class="small" href="{% url 'account:login' %}">Si ya tienes una cuenta, ingresa acá</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
