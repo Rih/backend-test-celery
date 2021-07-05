@@ -21,7 +21,6 @@ from dashboard.factories import MenuFactory, MealFactory
 class ApiMenuTest(TestCase):
     fixtures = [
         'meal',
-        'menu_meal',
         'menu',
         'site'
     ]

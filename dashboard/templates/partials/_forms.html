@@ -1,0 +1,9 @@
+{% extends "base-modal.html" %}
+{% block modal_content %}
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_title">Name</label>
+        <input class="form-control" type="text" name="title" maxlength="255" required id="id_title"
+        value="{{ form.title.value }}" placeholder="Details here">
+      </div>
+{% endblock modal_content %}

@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework.urlpatterns import format_suffix_patterns
-
 from .utils.healthz import healthz
 
 urlpatterns = [
@@ -27,6 +26,7 @@ urlpatterns = [
     path('api', include('api.urls', namespace='api')),
     path('account', include('account.urls', namespace='account')),
     path('dashboard', include('dashboard.urls', namespace='dashboard')),
+    path('', include('menu.urls', namespace='menu')),
 ]
 
 app_name = 'api'

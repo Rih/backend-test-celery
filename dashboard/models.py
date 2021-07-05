@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import uuid
 from django.db import models
 from dashboard.managers import MealManager, MenuManager
@@ -44,10 +45,4 @@ class TaskMenu(models.Model):
     celery_status = models.IntegerField(default=0)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     
-
-class Order(models.Model):
-    meal = models.ForeignKey(Meal, on_delete=models.PROTECT)
-    name = models.CharField(max_length=50, null=True)
-    email = models.EmailField(max_length=50)
-    suggestion = models.TextField(null=True, blank=True)
 

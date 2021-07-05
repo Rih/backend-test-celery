@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import factory
 from dashboard.models import Meal, Menu
 from django.contrib.auth.models import User

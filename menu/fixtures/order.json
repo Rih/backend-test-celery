@@ -1,11 +1,12 @@
 [
   {
-    "model": "dashboard.order",
+    "model": "menu.order",
     "pk": 1,
     "fields": {
       "email": "drigox90+order@gmail.com",
       "meal_id": 1,
-      "suggestion": "Nada"
+      "suggestion": "Nada",
+      "created_at": "2020-03-17T11:20:53"
     }
   }
 

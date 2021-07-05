@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 # Standard libs
 import logging
 from datetime import datetime, timedelta
@@ -21,13 +23,15 @@ def on_msg(body):
 def schedule_menu(sender, instance, created, **kwargs):
     if created:
         tomorrow = datetime.utcnow() + timedelta(hours=-4)
-        # task = schedule_menu_process.apply_async(args=[instance.pk], eta=10)
         task = schedule_menu_process.apply_async(args=[instance.pk], countdown=10)
-        import pdb; pdb.set_trace()
+        #task = schedule_menu_process.apply_async(menu_id=instance.pk, countdown=10)
+        # task = schedule_menu_process.si(instance.pk)
+        #import pdb; pdb.set_trace()
         #task = schedule_menu_process.s(instance.pk)
         #print(task.get(on_message=on_msg, propagate=False))
         task_menu = TaskMenu.objects.create(
             menu=instance,
             celery_task_id=task
         )
+        # task()
         # task.apply_async(eta=tomorrow)

@@ -1,38 +1,156 @@
 {% extends "base-admin.html" %}
 
 {% block content %}
-<form id="meal_form">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="id_title">Título</label>
-        <input class="form-control" type="text" name="title" maxlength="255" required id="id_title"
-        value="{{ form.title.value }}" placeholder="Titulo">
-      </div>
-    <input class="btn btn-success btn-icon-split" type="submit" value="Enviar" />
-</form>
 
-
-
-{% for meal in object_list %}
-<div class="row">
-     <div class="col-lg-12 mb-4">
-            <div class="card bg-info text-white shadow">
-                <div class="card-body">
-                     {{meal.title }}
+<div id="create_container"></div>
+<div id="edit_container"></div>
+<div id="wrapper">
+    <div class="container-fluid">
+        <h1 class="h3 mb-2 text-gray-800">My Meals</h1>
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                 <button class="btn btn-success float-right" data-toggle="modal" data-target="#{{ modal_id }}">Create</button>
+             </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Meals</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for i, meal in object_list %}
+                            <tr>
+                                <td>{{ meal.title }}</td>
+                                <td>
+                                    <button class="btn btn-primary" onClick="editMeal({{ meal.id }})">Edit</button>
+                                    <button class="btn btn-danger" onClick="deleteMeal({{ meal.id }})">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-{% endfor %}
+</div>
 {% endblock content %}
   {% block js %}
     <script>
-        $("#meal_form").on("submit", saveMeal);
+        $("#{{ form_id }}").on("submit", function(e){
+            saveMeal(e);
+        });
 
+        $("#{{ form_id_edit }}").on("submit", function(e){
+            saveMeal(e);
+        });
+
+        async function deleteMeal(mealId){
+            const { isConfirmed } = await Swal.fire({
+              title: 'Deletion!',
+              text: 'Do you want to continue',
+              icon: 'warning',
+              confirmButtonText: 'Yes!'
+            });
+            const url = `{{ base_url }}/api/meals/${mealId}/`;
+            if (isConfirmed){
+                $.ajax(
+                    {
+                        url: url,
+                        method: 'DELETE',
+                        dataType: 'application/json',
+                    }
+                ).done((result, xhr, x2) => {
+                    if(x2.status == 204){
+                        //refresh table
+                        Swal.fire({
+                          title: 'Deletion successful!',
+                          text: 'OK!',
+                          icon: 'success',
+                        });
+                        window.location.href = ''
+                    }
+                }).fail((result, xhr, x2) => {
+                    const res = JSON.parse(result.responseText)
+                    Swal.fire({
+                      title: 'Deletion failed!',
+                      text: res.detail,
+                      icon: 'error',
+                    });
+                });
+            }
+
+        }
+
+        function openModal(url, params){
+            const { modal_container, model_name } = params;
+            $.ajax(
+                {
+                    url: url,
+                    method: 'GET',
+                }
+            ).done((result, xhr, x2) => {
+                console.log(result);
+                $(`#${modal_container}).html(result);
+                $(`#${model_name}_modal`).modal('show');
+            }).fail((result, xhr, x2) => {
+                Swal.fire({
+                  title: 'Modal failed!',
+                  text: 'Error desconocido',
+                  icon: 'error',
+                });
+            });
+        }
+
+        function editMeal(mealId){
+            const query = new URLSearchParams({
+                model: 'meal',
+                title: 'Edit Meal',
+            }).toString();
+            const url = `{{ base_url }}/dashboard/meals/edit/${mealId}/?${query}`;
+            openModal(url, {
+                modal_container: 'edit_container',
+                model_name: 'meal',
+            });
+        }
+
+
+        function updateMeal(mealId){
+            debugger;
+            const url = `{{ base_url }}/api/meals/${mealId}/`;
+            const form = $(event.target);
+            const data = form.serialize();
+            $.ajax(
+                {
+                    url: url,
+                    method: 'PUT',
+                    dataType: 'application/json',
+                    data: JSON.stringify(data),
+                }
+            ).done(result => {
+                console.log(result);
+                debugger;
+                $(event.target).modal('close');
+            });
+        }
         function saveMeal(event){
             event.preventDefault();
             debugger;
-            const url = "http://localhost:8000/dashboard/meals/create";
+            const url = `{{ base_url }}/api/meals/`;
             const form = $(event.target);
             const data = form.serialize();
             $.ajax(
@@ -42,8 +160,10 @@
                     dataType: 'application/json',
                     data: JSON.stringify(data),
                 }
-            ).then(result => {
+            ).done(result => {
                 console.log(result);
+                debugger;
+                $(event.target).modal('close');
             });
         }
     </script>

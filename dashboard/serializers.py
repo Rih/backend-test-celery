@@ -1,4 +1,5 @@
-# from django.contrib.auth.models import User
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from rest_framework import serializers
@@ -6,7 +7,6 @@ from rest_framework import serializers
 from dashboard.models import (
     Menu,
     Meal,
-    Order,
 )
 
 
@@ -43,12 +43,4 @@ class MealModelSerializer(serializers.ModelSerializer):
 
     many = True
 
-
-class OrderModelSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Order
-        fields = '__all__'
-
-    many = True
 

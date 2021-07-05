@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "captcha",
     "account",
     "dashboard",
+    "menu",
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "dashboard.context_processor.append_global_vars"
             ],
         },
     },
@@ -101,9 +103,9 @@ DATABASES = {
         "PORT": 5432,
         "CONN_MAX_AGE": 600,
         "DISABLE_SERVER_SIDE_CURSORS": True,
-        'TEST': {
-            'NAME': 'mytestdatabase',
-        },
+        # 'TEST': {
+        #     'NAME': 'testdb',
+        # },
     },
 }
 
@@ -147,7 +149,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -257,8 +259,12 @@ LOGGING = {
     },
 }
 
-SLACK_OAUTH_TOKEN = 'xoxb-2237050410850-2243278600852-d5Ru1oJxR5cXElUftiPHNmKv'
-SLACK_CHANNEL_ID = 'C02757KU9DJ' # meals
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+SLACK_OAUTH_TOKEN = os.getenv('SLACK_OAUTH_TOKEN', 'xoxb-2237050410850-2243278600852-zTNjX3GdsZuZ1VeyyRd2U8BB')
+SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL', 'C02757KU9DJ') # meals
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -272,7 +278,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587  # TLS
 EMAIL_HOST_USER = 'rodrigo@sistematiza.cl'
 # xsmtpsib-b035581722003f717f6c25e75ca9e989f0d5e32910ebf50d0506e4e5ac990a46-X6xfE5wtnyRQUKk2
-EMAIL_HOST_PASSWORD = 'HF4CwUjLpkX15PfS'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', 'HF4CwUjLpkX15PfS')
 
 SITE_ID = 1
 
@@ -280,5 +286,5 @@ CELERY_TASK_TRACK_STARTED = True
 
 # Modificar
 
-RECAPTCHA_PUBLIC_KEY = '6LeqAZcUAAAAAG2Zs9u7ZwVFm1KCdaVvOl793_A7'
-RECAPTCHA_PRIVATE_KEY = '6LeqAZcUAAAAAN_DS8RtU7vyuu0H6fAjVTev8GSN'
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '6LeqAZcUAAAAAG2Zs9u7ZwVFm1KCdaVvOl793_A7')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '6LeqAZcUAAAAAN_DS8RtU7vyuu0H6fAjVTev8GSN')

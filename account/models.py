@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+# Standard libs
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
