@@ -7,7 +7,7 @@ from menu.models import Order
 
 
 class OrderForm(forms.ModelForm):
-    
+
     class Meta:
         model = Order
         fields = ('meal', 'name', 'email', 'suggestion')
@@ -22,13 +22,7 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
-    # meal = forms.ModelChoiceField(
-    #     queryset=Meal.objects.actives(),
-    #     widget=forms.RadioSelect(attrs={
-    #
-    #     })
-    # )
-    
+
     name = forms.CharField(
         max_length=50,
         widget=forms.TextInput(
@@ -61,7 +55,7 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
-    
+
     def clean(self):
         cleaned_data = super().clean()
         cleaned_data['meal'] = Meal.objects.get(pk=cleaned_data.get('meal'))

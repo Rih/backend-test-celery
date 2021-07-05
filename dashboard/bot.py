@@ -4,16 +4,15 @@ import requests
 import json
 import logging
 from django.conf import settings
-from dashboard.models import Menu
 from django.contrib.sites.models import Site
 
 log = logging.getLogger(__name__)
 
 
 class SlackBot:
-    
+
     TOKEN = settings.SLACK_OAUTH_TOKEN
-    
+
     def __init__(self, **kwargs):
         self.CHANNEL = kwargs.get('CHANNEL', settings.SLACK_CHANNEL_ID)
         print('using: ', self.TOKEN, self.CHANNEL)
@@ -22,9 +21,9 @@ class SlackBot:
             'Authorization': f'Bearer {self.TOKEN}',
             'Content-Type': 'application/json',
         }
-        
+
     def send(self, text: str):
-        #url = 'https://hooks.slack.com/services/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'
+        # url = 'https://hooks.slack.com/services/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'
         endpoint = '/api/chat.postMessage'
         payload = {
             'channel': self.CHANNEL,
@@ -37,12 +36,12 @@ class SlackBot:
         )
         print(response)
         result = response.json()
-        print (result)
+        print(result)
         return result
-    
+
 
 class SlackReminder:
-    
+
     msg_greetings = [
         'Hello!',
         'I share with you today\'s menu :)',
@@ -55,14 +54,14 @@ class SlackReminder:
 
     def __init__(self):
         self.bot = SlackBot()
-    
+
     def create_options(self, options) -> list:
         list(enumerate(options))
         opts = [
             f'Option {i + 1}: {o}' for i, o in enumerate(options)
         ]
         return opts
-    
+
     def construct_msg(self, opts: list, menu_id: str) -> str:
         text = '\n'.join(self.msg_greetings)
         current_site = Site.objects.get_current()
@@ -71,7 +70,7 @@ class SlackReminder:
         text += '\n'.join(opts)
         text += '\n'.join(self.msg_farewell)
         return text
-    
+
     def send(self, menu_options: list, menu_id: str) -> dict:
         text = self.construct_msg(self.create_options(menu_options), menu_id)
         print(text)

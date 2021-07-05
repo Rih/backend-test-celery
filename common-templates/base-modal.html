@@ -7,7 +7,7 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form id="{{ form_id }}">
+        <form id="{{ form_id }}" data-model-id="{% if object %}{{ object.id }}{% endif %}">
         <div class="modal-body">
             <h2>{{ modal_title }}</h2>
             {% block modal_content %}
@@ -15,7 +15,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <input data-model-id="{% if object %}{{ object.id }}{% endif %}" class="btn btn-success" type="submit" value="Send" />
+            <input class="btn btn-success" type="submit" value="Send" />
         </div>
         </form>
       </div>

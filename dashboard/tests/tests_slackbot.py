@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
 # from __future__ import unicode_literals
 # # Standard libs
-import uuid
-import json
 # # Django libs
-from django.urls import reverse
 from unittest.mock import patch
 from django.test import TestCase, tag
 # # Own libs
-from dashboard.models import Menu, Meal
 from dashboard.bot import SlackBot, SlackReminder
-from backend_test.tasks import schedule_menu_process
 from account.factories import UserFactory
 from dashboard.tests.mock import RequestMock
 
@@ -35,7 +30,7 @@ class SlackbotTest(TestCase):
         )
         self.user.set_password('pass')
         self.user.save()
-        
+
     @tag('slackbot_send_success')
     @patch('requests.post')
     def tests_slackbot_send_success(self, request_mock):
@@ -45,7 +40,7 @@ class SlackbotTest(TestCase):
             CHANNEL='mock_channel'
         ).send('msg')
         self.assertTrue(result['ok'])
-        
+
     @tag('slackbot_send_error')
     @patch('requests.post')
     def tests_slackbot_send_error(self, request_mock):
@@ -56,7 +51,6 @@ class SlackbotTest(TestCase):
         ).send('msg')
         self.assertTrue(not result['ok'])
 
-
     @tag('slackreminder_create_options')
     @patch('requests.post')
     def tests_slackreminder_create_options(self, request_mock):
@@ -65,7 +59,7 @@ class SlackbotTest(TestCase):
             'Corn pie and Dessert',
             'Chicken Nugget Rice',
         ]
-        menu_id = '00000000-0000-0000-0000-000000000001'
+        # menu_id = '00000000-0000-0000-0000-000000000001'
         request_mock.return_value = RequestMock(mode='success')
         result = SlackReminder().create_options(options)
         self.assertListEqual(
@@ -75,7 +69,7 @@ class SlackbotTest(TestCase):
                 'Option 2: Chicken Nugget Rice'
             ]
         )
-        
+
     @tag('slackreminder_construct_msg')
     @patch('requests.post')
     def tests_slackreminder_construct_msg(self, request_mock):

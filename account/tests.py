@@ -16,11 +16,11 @@ from .models import EmailToken
     EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 )
 class AccountTest(TestCase):
-    
+
     fixtures = [
         'site'
     ]
-    
+
     def setUp(self):
         self.user = UserFactory(username='john', email='test@account.cl')
         self.user.set_password('pass')
@@ -97,7 +97,7 @@ class AccountTest(TestCase):
 
         response = self.client.get(reverse('account:logout'))
         self.assertEqual(response.status_code, 302)
-    
+
     @tag('logout')
     def test_logout(self):
         # python manage.py test --tag=logout
@@ -145,7 +145,19 @@ class AccountTest(TestCase):
             follow=True
         )
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, 'Credenciales inválidas')
+        self.assertContains(response, 'Invalid credentials')
+        # email doesnot exists
+        response = self.client.post(
+            reverse('account:login'),
+            {
+                'email': 'john@doe.not',
+                'password': 'doe1234',
+                'g-recaptcha-response': 'PASSED'
+            },
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Invalid credentials')
 
     @tag('get_email_confirmation')
     def test_get_email_confirmation(self):
@@ -155,7 +167,7 @@ class AccountTest(TestCase):
             reverse('account:verify_email', kwargs={'token': 'a1wqeq2aasd'})
         )
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, 'Su email ha sido confirmado con éxito')
+        self.assertContains(response, 'Your email has been confirmed already')
         token = EmailToken.objects.get(token='a1wqeq2aasd')
         self.assertTrue(token.verified)
 

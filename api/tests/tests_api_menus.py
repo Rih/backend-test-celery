@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-# from __future__ import unicode_literals
+from __future__ import unicode_literals
 # # Standard libs
-import uuid
 import json
 # # Django libs
 from django.urls import reverse
-from django.utils import timezone
-from unittest.mock import patch
 from django.test import TestCase, tag, override_settings
-# from rest_framework.test import APITestCase, APIClient
 # # Own libs
-from dashboard.models import Menu, Meal
+from dashboard.models import Menu
 from account.factories import UserFactory
 from dashboard.factories import MenuFactory, MealFactory
 
@@ -24,7 +20,7 @@ class ApiMenuTest(TestCase):
         'menu',
         'site'
     ]
-    
+
     def setUp(self):
         ''' Check coverage
             coverage3 run --source='.' manage.py test api
@@ -35,7 +31,7 @@ class ApiMenuTest(TestCase):
         )
         self.user.set_password('pass')
         self.user.save()
-    
+
     @tag('api_menu_list')
     def tests_api_menu_list(self):
         # python manage.py test --tag=api_menu_list
@@ -53,7 +49,7 @@ class ApiMenuTest(TestCase):
             list(result[0].keys()),
             ['id', 'meals', 'scheduled_at']
         )
-    
+
     @tag('api_menu_delete')
     def tests_api_menu_delete(self):
         # python manage.py test --tag=api_menu_delete
@@ -91,7 +87,7 @@ class ApiMenuCreateTest(TestCase):
         'meal',
         'site'
     ]
-    
+
     def setUp(self):
         ''' Check coverage
             coverage3 run --source='.' manage.py test api
@@ -102,7 +98,7 @@ class ApiMenuCreateTest(TestCase):
         )
         self.user.set_password('pass')
         self.user.save()
-   
+
     @tag('api_menu_create')
     def tests_api_menu_create(self):
         # python manage.py test --tag=api_menu_create

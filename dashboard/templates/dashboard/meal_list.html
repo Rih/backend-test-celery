@@ -9,7 +9,7 @@
         <h1 class="h3 mb-2 text-gray-800">My Meals</h1>
         <div class="row">
             <div class="col-lg-12 mb-4">
-                 <button class="btn btn-success float-right" data-toggle="modal" data-target="#{{ modal_id }}">Create</button>
+                 <button class="btn btn-success float-right" onClick="prepareModal({model: 'meal',mode: 'create', modal_container: 'create_container'}, 0)">Create</button>
              </div>
         </div>
         <div class="card shadow mb-4">
@@ -36,7 +36,7 @@
                             <tr>
                                 <td>{{ meal.title }}</td>
                                 <td>
-                                    <button class="btn btn-primary" onClick="editMeal({{ meal.id }})">Edit</button>
+                                    <button class="btn btn-primary" onClick="prepareModal({model: 'meal',mode: 'edit', modal_container: 'edit_container'}, {{ meal.id }})">Edit</button>
                                     <button class="btn btn-danger" onClick="deleteMeal({{ meal.id }})">Delete</button>
                                 </td>
                             </tr>
@@ -51,22 +51,104 @@
 {% endblock content %}
   {% block js %}
     <script>
-        $("#{{ form_id }}").on("submit", function(e){
-            saveMeal(e);
-        });
+        function escapeRegExp(str) {
+            return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        }
+        function replaceAll(str, find, replace) {
+            return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+        }
+        const str = "{{ partial_names|safe }}";
+        const scaped = replaceAll(str, "'", "\"");
+        const partials = JSON.parse(scaped);
+        const BASE_URL = '{{ base_url }}';
+        console.log(partials);
+        function addCreateEditListener(mode){
+            $(`#${partials[mode].form_id}`).on("submit", function(e){
+                saveMeal(e, mode, `${mode}_container`);
+            });
+        }
 
-        $("#{{ form_id_edit }}").on("submit", function(e){
-            saveMeal(e);
-        });
 
-        async function deleteMeal(mealId){
+
+        function openModal(url, params){
+            const { modal_container, mode } = params;
+            $.ajax(
+                {
+                    url: url,
+                    method: 'GET',
+                }
+            ).done((result, xhr, x2) => {
+                console.log(result);
+                $(`#${modal_container}`).html(result);
+                $(`#${partials[mode].modal_id}`).modal('show');
+                addCreateEditListener(mode);
+            }).fail((result, xhr, x2) => {
+                Swal.fire({
+                  title: 'Modal failed!',
+                  text: 'Error desconocido',
+                  icon: 'error',
+                });
+            });
+        }
+
+
+        function prepareModal(params, mealId = 0){
+            const query = new URLSearchParams(params).toString();
+            const url = `${BASE_URL}/dashboard/meals/${params.mode}/${mealId}/?${query}`;
+            openModal(url, {
+                modal_container: params.modal_container,
+                model_name: params.model,
+                mode: params.mode,
+            });
+        }
+
+        function saveMeal(event, mode, modal_container){
+            event.preventDefault();
+            const modelId = $(event.target).data('modelId');
+            const url = (modelId) ? `${BASE_URL}/api/meals/${modelId}/` : `${BASE_URL}/api/meals/`;
+            const form = $(event.target);
+            const data = form.serialize();
+            const request = $.ajax(
+                {
+                    url: url,
+                    method: (modelId) ? 'PUT': 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                }
+            );
+            request.done( async(result) => {
+                console.log(result);
+                $(`#${partials[mode].modal_id}`).modal('hide');
+                $(`#${modal_container}`).html('');
+                //document.removeEventListener('submit');
+                await Swal.fire({
+                  title: 'Action successful!',
+                  text: 'OK!',
+                  icon: 'success',
+                });
+                window.location.href = ''
+            });
+            request.fail((result, xhr, x2) => {
+                const res = JSON.parse(result.responseText);
+                if (result.status != 200){
+                    Swal.fire({
+                      title: 'Record failed!',
+                      text: res.detail,
+                      icon: 'error',
+                    });
+                }
+
+            });
+        }
+
+         async function deleteMeal(mealId){
             const { isConfirmed } = await Swal.fire({
               title: 'Deletion!',
               text: 'Do you want to continue',
               icon: 'warning',
               confirmButtonText: 'Yes!'
             });
-            const url = `{{ base_url }}/api/meals/${mealId}/`;
+            const url = `${BASE_URL}/api/meals/${mealId}/`;
             if (isConfirmed){
                 $.ajax(
                     {
@@ -94,77 +176,6 @@
                 });
             }
 
-        }
-
-        function openModal(url, params){
-            const { modal_container, model_name } = params;
-            $.ajax(
-                {
-                    url: url,
-                    method: 'GET',
-                }
-            ).done((result, xhr, x2) => {
-                console.log(result);
-                $(`#${modal_container}).html(result);
-                $(`#${model_name}_modal`).modal('show');
-            }).fail((result, xhr, x2) => {
-                Swal.fire({
-                  title: 'Modal failed!',
-                  text: 'Error desconocido',
-                  icon: 'error',
-                });
-            });
-        }
-
-        function editMeal(mealId){
-            const query = new URLSearchParams({
-                model: 'meal',
-                title: 'Edit Meal',
-            }).toString();
-            const url = `{{ base_url }}/dashboard/meals/edit/${mealId}/?${query}`;
-            openModal(url, {
-                modal_container: 'edit_container',
-                model_name: 'meal',
-            });
-        }
-
-
-        function updateMeal(mealId){
-            debugger;
-            const url = `{{ base_url }}/api/meals/${mealId}/`;
-            const form = $(event.target);
-            const data = form.serialize();
-            $.ajax(
-                {
-                    url: url,
-                    method: 'PUT',
-                    dataType: 'application/json',
-                    data: JSON.stringify(data),
-                }
-            ).done(result => {
-                console.log(result);
-                debugger;
-                $(event.target).modal('close');
-            });
-        }
-        function saveMeal(event){
-            event.preventDefault();
-            debugger;
-            const url = `{{ base_url }}/api/meals/`;
-            const form = $(event.target);
-            const data = form.serialize();
-            $.ajax(
-                {
-                    url: url,
-                    method: 'POST',
-                    dataType: 'application/json',
-                    data: JSON.stringify(data),
-                }
-            ).done(result => {
-                console.log(result);
-                debugger;
-                $(event.target).modal('close');
-            });
         }
     </script>
   {% endblock js %}

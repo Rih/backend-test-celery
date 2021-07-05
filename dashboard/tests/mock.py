@@ -23,7 +23,7 @@ BOT_RESPONSE = {
                     'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'
                 },
                 'team_id': 'T026Z1GC2R0'}
-            },
+        },
         'warning': 'missing_charset',
         'response_metadata': {'warnings': ['missing_charset']}
     },
@@ -38,9 +38,9 @@ BOT_RESPONSE = {
 
 
 class RequestMock:
-    
+
     def __init__(self, **kwargs):
         self.mode = kwargs.get('mode', 'success')
-        
+
     def json(self):
         return BOT_RESPONSE[self.mode]

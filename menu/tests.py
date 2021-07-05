@@ -6,12 +6,12 @@ from urllib.parse import urlencode
 from django.urls import reverse
 from django.test import TestCase, tag
 # # Own libs
-from dashboard.models import Menu, Meal
+from dashboard.models import Menu
 
 
 @tag('order_public')
 class OrderTest(TestCase):
-    
+
     fixtures = [
         'meal',
         'menu',
@@ -33,7 +33,7 @@ class OrderTest(TestCase):
         self.assertEquals(result.status_code, 200)
         for meal in menu.meals.all():
             self.assertContains(result, meal.title)
-        
+
     @tag('menu_public_post')
     def tests_menu_post(self):
         # python manage.py test --tag=menu_public_post
@@ -64,13 +64,10 @@ class OrderTest(TestCase):
         )
         # valid case
         self.assertEquals(result.status_code, 302)
-        #self.assertContains(result, 'DONE')
-
 
     @tag('menu_public_done_get')
     def tests_menu_done_get(self):
         # python manage.py test --tag=menu_public_done_get
-        menu = Menu.objects.get(pk=1)
         url = reverse('menu:menu_done')
         result = self.client.get(
             url,

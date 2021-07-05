@@ -69,13 +69,13 @@ class LoginView(FormView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            form.add_error(None, 'Credenciales inválidas')
+            form.add_error(None, 'Invalid credentials')
             return super(LoginView, self).form_invalid(form)
         user = authenticate(username=user.username, password=password)
         if user is not None:
             login(self.request, user)
         else:
-            form.add_error(None, 'Credenciales inválidas')
+            form.add_error(None, 'Invalid credentials')
             return super(LoginView, self).form_invalid(form)
         return super(LoginView, self).form_valid(form)
 

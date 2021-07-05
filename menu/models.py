@@ -13,4 +13,3 @@ class Order(models.Model):
     email = models.EmailField(max_length=50)
     suggestion = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-

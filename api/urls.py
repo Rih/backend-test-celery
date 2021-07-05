@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.urls import include, path
-from django.conf.urls import url
 from api import views
 from rest_framework import routers
 router = routers.SimpleRouter()
@@ -12,4 +10,3 @@ router.register(r'/menus', views.MenuViewSet, basename='menus_action')
 app_name = 'api'
 
 urlpatterns = router.urls
-

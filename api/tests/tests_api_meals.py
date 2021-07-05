@@ -1,20 +1,14 @@
 # -*- coding: utf-8 -*-
-# from __future__ import unicode_literals
+from __future__ import unicode_literals
 # # Standard libs
-import uuid
 import json
 # # Django libs
 from django.urls import reverse
-from unittest.mock import patch
 from django.test import TestCase, tag, override_settings
-# from rest_framework.test import APITestCase, APIClient
 # # Own libs
-from dashboard.models import Menu, Meal
-from dashboard.bot import SlackBot, SlackReminder
-from backend_test.tasks import schedule_menu_process
+from dashboard.models import Meal
 from account.factories import UserFactory
 from dashboard.factories import MealFactory
-from dashboard.tests.mock import RequestMock
 
 
 @tag('api_meals')
@@ -25,7 +19,7 @@ class ApiMealTest(TestCase):
         'meal',
         'site'
     ]
-    
+
     def setUp(self):
         ''' Check coverage
             coverage3 run --source='.' manage.py test api
@@ -54,7 +48,7 @@ class ApiMealTest(TestCase):
             list(result[0].keys()),
             ['id', 'title', 'modified_at', 'deleted_at']
         )
-        
+
     @tag('api_meal_create')
     def tests_api_meal_create(self):
         # python manage.py test --tag=api_meal_create
@@ -179,4 +173,3 @@ class ApiMealTest(TestCase):
         self.assertEquals(res.status_code, 204)
         meal = Meal.objects.filter(id=a_meal.id).last()
         self.assertTrue(not(meal.deleted_at is None))
-

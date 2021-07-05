@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 import factory
 from dashboard.models import Meal, Menu
-from django.contrib.auth.models import User
 
 
 class MenuFactory(factory.django.DjangoModelFactory):
@@ -14,4 +13,4 @@ class MealFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Meal
 
-    title = 'Pollos con papas'
+    title = 'Chicken with potatoe chips'

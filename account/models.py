@@ -25,13 +25,6 @@ class EmailToken(models.Model):
                 reverse_lazy(
                     'account:verify_email', kwargs={'token': self.token}))
 
-    def last_email_diff_hours(self):
-        now = datetime.datetime.now(datetime.timezone.utc)
-        diff = now - self.last_email_sent
-        seconds = diff.total_seconds()
-        hours = divmod(seconds, 3600)[0]
-        return hours
-
     def send_confirmation_email(self):
         html_email = 'account/emails/email_registration.html'
         plain_email = 'account/emails/email_registration.txt'
@@ -44,7 +37,7 @@ class EmailToken(models.Model):
             {'user': self.user}
         )
         self.user.email_user(
-            'Bienvenido a Transcriptor',
+            'Welcome!',
             msg_plain,
             html_message=msg_html
         )

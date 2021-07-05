@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 # from __future__ import unicode_literals
 # # Standard libs
-import json
 # # Django libs
 from django.urls import reverse
-from unittest.mock import patch
 from django.test import TestCase, tag
 # # Own libs
-from dashboard.models import Menu, Meal
 from account.factories import UserFactory
 
 
@@ -53,7 +50,7 @@ class DashboardTest(TestCase):
         self.assertContains(result, 'Meals')
         self.assertContains(result, 'Menus')
         self.assertContains(result, 'Orders')
-        
+
     @tag('menu_list_template')
     def tests_menu_list(self):
         # python manage.py test --tag=menu_list_template
@@ -94,7 +91,6 @@ class DashboardTest(TestCase):
         self.assertEquals(result.status_code, 200)
         self.assertContains(result, 'My Meals')
 
-
     @tag('meal_partial_modal_template')
     def tests_meal_modal_create(self):
         # python manage.py test --tag=meal_partial_modal_template
@@ -103,20 +99,40 @@ class DashboardTest(TestCase):
         })
         self.client.login(username='jhon', password='pass')
         result = self.client.get(
-            f'{url}?model=meal',
+            f'{url}?model=meal&mode=create',
             content_type='application/html'
         )
         self.assertEquals(result.status_code, 200)
+        self.assertContains(result, 'id="meal_form"')
+        self.assertContains(result, 'id="meal_modal"')
+        self.assertContains(result, 'New Meal')
 
     @tag('meal_partial_modal_edit_template')
-    def tests_meal_modal_create(self):
+    def tests_meal_modal_edit(self):
         # python manage.py test --tag=meal_partial_modal_edit_template
         url = reverse('dashboard:meals_edit', kwargs={
             'pk': 1
         })
         self.client.login(username='jhon', password='pass')
         result = self.client.get(
-            f'{url}?model=meal',
+            f'{url}?model=meal&mode=edit',
             content_type='application/html'
         )
         self.assertEquals(result.status_code, 200)
+        self.assertContains(result, 'id="meal_form_edit"')
+        self.assertContains(result, 'id="meal_modal_edit"')
+        self.assertContains(result, 'Edit Meal')
+
+    @tag('menu_partial_modal_template')
+    def tests_menu_modal_create(self):
+        # python manage.py test --tag=menu_partial_modal_template
+        url = reverse('dashboard:menus_create')
+        self.client.login(username='jhon', password='pass')
+        result = self.client.get(
+            f'{url}?model=menu&mode=create',
+            content_type='application/html'
+        )
+        self.assertEquals(result.status_code, 200)
+        self.assertContains(result, 'id="menu_form"')
+        self.assertContains(result, 'id="menu_modal"')
+        self.assertContains(result, 'New Menu')

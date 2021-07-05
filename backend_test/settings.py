@@ -156,7 +156,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 # STATICFILES_STORAGE = 'transcriptor.storage.StaticStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, "../collected_static")
-#STATIC_ROOT = os.path.join(BASE_DIR, "../static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "../static")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -165,11 +165,11 @@ STATICFILES_DIRS = [
 LOGIN_URL = '/account/login'
 
 REST_FRAMEWORK = {
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    #'PAGE_SIZE': 10,
-    #'DEFAULT_PERMISSION_CLASSES': [
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
+    # 'DEFAULT_PERMISSION_CLASSES': [
     #    'rest_framework.permissions.IsAuthenticated',
-    #],
+    # ],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
@@ -264,14 +264,20 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
 SLACK_OAUTH_TOKEN = os.getenv('SLACK_OAUTH_TOKEN', 'xoxb-2237050410850-2243278600852-zTNjX3GdsZuZ1VeyyRd2U8BB')
-SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL', 'C02757KU9DJ') # meals
+SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL', 'C02757KU9DJ')  # meals
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'rodrigo.ediaz.f@gmail.com'
 SERVER_EMAIL = 'rodrigo.ediaz.f@gmail.com'
+
+
 # EMAIL_HOST = 'smtp.google.com'
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
+
+
 # EMAIL_USE_SSL = True
 # EMAIL_PORT = 465  # SSL
 EMAIL_USE_TLS = True
