@@ -1,4 +1,4 @@
-Hola {{ user.get_full_name|capfirst }}
+Hello {{ user.get_full_name|capfirst }}
 <br>
 {% with user.emailtoken.get_email_confirmation_url as link %}
   To complete your sign-up process into the platform, confirm your email is needed.

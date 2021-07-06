@@ -12,7 +12,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Nombre'
+                'placeholder': 'Name'
             }
         )
     )
@@ -21,7 +21,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Apellido'
+                'placeholder': 'Lastname'
             }
         )
     )
@@ -40,7 +40,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Contraseña',
+                'placeholder': 'Password here',
                 'type': 'password',
                 'autocomplete': 'off'
             }

@@ -1,19 +1,19 @@
 {% extends 'base-admin.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Registro' %}{% endblock title %}
+{% block title %}Sign in{% endblock title %}
 {% block content %}
 <!-- Nested Row within Card Body -->
 <div class="row">
   <div class="col-12 d-lg-block">
     <div class="p-5">
       <div class="text-center">
-        <h1 class="h4 text-gray-900 mb-4">{% trans "Confirme su cuenta" %}</h1>
+        <h1 class="h4 text-gray-900 mb-4">Confirm your account</h1>
       </div>
-      <p align="justify">{% trans "No puede acceder a su cuenta aún, debido a que su correo no ha sido confirmado. Por favor revise su bandeja de entrada y haga click en el enlace que aparece en el email" %}</p>
+      <p align="justify">You cannot enter to the platform yet, due to you have not confirmed your email. Please check your mail inbox and click on the confirmation link</p>
         {% if request.user.emailtoken.last_email_diff_hours > 6 %}
           <form class="user" method="POST" action="{% url 'account:email_unverified' %}">
             {% csrf_token %}
-            <button class="btn btn-primary btn-user btn-block ">{% trans "Reenviar Correo" %}</button>
+            <button class="btn btn-primary btn-user btn-block ">{% trans "Reset Email" %}</button>
           </form>
         {% endif %}
 

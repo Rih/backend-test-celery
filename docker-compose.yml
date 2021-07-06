@@ -13,6 +13,10 @@ services:
       - DJANGO_SETTINGS_MODULE=backend_test.settings
       - APP=backend_test
       - QUEUES=celery
+      - RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY}
+      - RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - SLACK_OAUTH_TOKEN=${SLACK_OAUTH_TOKEN}
       - PYTHONDONTWRITEBYTECODE=1
       # forwarded from the host if they exist
       - UPDATE_PYTHON_REQUIREMENTS_ON_CONTAINERSTART
@@ -20,6 +24,7 @@ services:
       - .:/opt/cornershop/backend-test
     ports:
       - 8000:8000
+      - 6899:6899
     depends_on:
       - jupyterlab
       - postgres
@@ -39,6 +44,10 @@ services:
       - DJANGO_ALLOW_ASYNC_UNSAFE=true
       - APP=backend_test
       - QUEUES=celery
+      - RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY}
+      - RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - SLACK_OAUTH_TOKEN=${SLACK_OAUTH_TOKEN}
       # forwarded from the host if they exist
       - UPDATE_PYTHON_REQUIREMENTS_ON_CONTAINERSTART
   postgres:

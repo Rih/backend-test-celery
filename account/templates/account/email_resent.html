@@ -1,17 +1,17 @@
 {% extends 'base-admin.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Registro' %}{% endblock title %}
+{% block title %}Sign in{% endblock title %}
 {% block content %}
 <!-- Nested Row within Card Body -->
 <div class="row">
   <div class="col-12 d-none d-lg-block bg-login-image"></div>
   <div class="p-5">
     <div class="text-center">
-      <h1 class="h4 text-gray-900 mb-4">Felicidades</h1>
+      <h1 class="h4 text-gray-900 mb-4">Congratulations</h1>
     </div>
-    <p align="justify">Hemos reenviado el email de confirmación de correo. Por favor revise su bandeja de entrada.</p>
+    <p align="justify">We sent you a confirmation link. Please review your mail inbox.</p>
     <hr>
-    <a href="{% url 'account:login' %}" class="btn btn-primary btn-user btn-block">Acceder</a>
+    <a href="{% url 'account:login' %}" class="btn btn-primary btn-user btn-block">Enter</a>
   </div>
 
 </div>

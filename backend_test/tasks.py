@@ -15,6 +15,7 @@ class MenuTask(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         # menu = Menu.objects.get(pk=args[0])
         # menu.save()
+        # import pdb; pdb.set_trace()
         logger.error(
             'Task {0} raised exception: {1!r}\n{2!r}'.format(
                 task_id, exc, einfo
@@ -24,7 +25,6 @@ class MenuTask(Task):
 
 @app.task(base=MenuTask)
 def schedule_menu_process(menu_id):
-    rdb.set_trace()
     # menu_id = kwargs.get('menu_id')
     menu = Menu.objects.get(pk=menu_id)
     meals = [m.title for m in menu.meals.all()]

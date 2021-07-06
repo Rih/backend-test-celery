@@ -186,4 +186,4 @@ class AccountTest(TestCase):
         self.test_post_sign_up()
         response = self.client.post(reverse('account:email_unverified'))
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, 'Hemos reenviado el email')
+        self.assertContains(response, 'We sent you a confirmation link')

@@ -4,6 +4,7 @@ import uuid
 from django.db import models
 from dashboard.managers import MealManager, MenuManager
 from django.utils import timezone
+from celery.result import AsyncResult
 # Create your models here.
 
 
@@ -24,6 +25,10 @@ class Meal(models.Model):
         self.save()
 
 
+def on_msg(body):
+    print(body)
+
+
 class Menu(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     meals = models.ManyToManyField(Meal)
@@ -36,6 +41,12 @@ class Menu(models.Model):
         # TODO: implement pre_delete to unlink a current task
         if self.deleted_at:
             return
+        
+        import pdb; pdb.set_trace()
+        ar = AsyncResult(self.taskmenu.celery_task_id)
+        ar.get(on_message=on_msg, propagate=False)
+        if not ar.status == 'SUCCESS':
+            ar.revoke()
         self.deleted_at = timezone.now()
         self.save()
 
@@ -43,4 +54,8 @@ class Menu(models.Model):
 class TaskMenu(models.Model):
     celery_task_id = models.CharField(max_length=200, blank=True, default='')
     celery_status = models.IntegerField(default=0)
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    menu = models.OneToOneField(
+        Menu,
+        related_name='taskmenu',
+        on_delete=models.CASCADE
+    )

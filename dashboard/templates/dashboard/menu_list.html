@@ -35,6 +35,7 @@
                         </div>
                         <div id="collapse{{ menu.id }}" class="collapse" aria-labelledby="{{ menu.id }}" data-parent="#accordion">
                           <div class="card-body">
+                              ID: ({{ menu.id }})
                             <ul>
                                 {% for meal in menu.meals.all %}
                                 <li>
@@ -113,7 +114,6 @@
             const url = (modelId) ? `${BASE_URL}/api/menus/${modelId}/` : `${BASE_URL}/api/menus/`;
             const form = $(event.target);
             const data = form.serialize();
-            debugger;
             const request = $.ajax(
                 {
                     url: url,

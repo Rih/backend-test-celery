@@ -46,7 +46,8 @@ class OrderForm(forms.ModelForm):
         )
     )
     suggestion = forms.CharField(
-        max_length=20,
+        max_length=1000,
+        required=False,
         widget=forms.Textarea(
             attrs={
                 'class': 'form-control ',

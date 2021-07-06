@@ -263,19 +263,19 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-SLACK_OAUTH_TOKEN = os.getenv('SLACK_OAUTH_TOKEN', 'xoxb-2237050410850-2243278600852-zTNjX3GdsZuZ1VeyyRd2U8BB')
+SLACK_OAUTH_TOKEN = os.getenv('SLACK_OAUTH_TOKEN', '')
 SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL', 'C02757KU9DJ')  # meals
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'rodrigo.ediaz.f@gmail.com'
-SERVER_EMAIL = 'rodrigo.ediaz.f@gmail.com'
+DEFAULT_FROM_EMAIL = 'noreply@sistematiza.cl'
+SERVER_EMAIL = 'noreply@sistematiza.cl'
 
 
 # EMAIL_HOST = 'smtp.google.com'
-EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_HOST = 'smtp.mandrillapp.com'  # 'smtp-relay.sendinblue.com'
 
 
 # EMAIL_USE_SSL = True
@@ -283,8 +283,7 @@ EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587  # TLS
 EMAIL_HOST_USER = 'rodrigo@sistematiza.cl'
-# xsmtpsib-b035581722003f717f6c25e75ca9e989f0d5e32910ebf50d0506e4e5ac990a46-X6xfE5wtnyRQUKk2
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', 'HF4CwUjLpkX15PfS')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 
 SITE_ID = 1
 
@@ -292,5 +291,5 @@ CELERY_TASK_TRACK_STARTED = True
 
 # Modificar
 
-RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '6LeqAZcUAAAAAG2Zs9u7ZwVFm1KCdaVvOl793_A7')
-RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '6LeqAZcUAAAAAN_DS8RtU7vyuu0H6fAjVTev8GSN')
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '')

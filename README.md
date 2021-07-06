@@ -1,5 +1,12 @@
 ## cornershop-backend-test
 
+
+### Complete env vars defined in env.example
+
+### Copy env.example into .env in same folder
+- `cp env.example .env`
+
+
 ### Running the development environment
 
 * `make up`
@@ -17,3 +24,6 @@
 
 * Local: http://127.0.0.1:8000
 
+### After creating development environment
+
+- run inside backend container: `sh bin/load-init.sh` 

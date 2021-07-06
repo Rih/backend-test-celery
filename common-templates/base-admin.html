@@ -66,11 +66,6 @@
       </li>
       <!-- Nav Item - Dashboard -->
 
-      <!-- Heading -->
-      <!--<div class="sidebar-heading">
-        Interface
-      </div>-->
-
       <!-- Nav Item - Pages Collapse Menu -->
 
        <hr class="sidebar-divider">
@@ -140,16 +135,10 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <!-- <a class="hidden dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                -->
-
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'account:logout' %}" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Cerrar sesión
+                  Logout
                 </a>
               </div>
             </li>
@@ -160,7 +149,7 @@
         <!-- End of Topbar -->
         {% block content %}
           {% if user.is_authenticated %}
-           <p>el usuario ya ha sido autenticado</p>
+           <p>User is authenticated</p>
           {% endif %}
         {% endblock %}
         <!-- /.container-fluid -->
@@ -172,7 +161,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span><i class="fas fa-envelope"></i><span> contacto@test.cl</span></span>
+            <span><i class="fas fa-envelope"></i><span> contact@test.cl</span></span>
           </div>
           <br>
           <div class="copyright text-center my-auto">
@@ -199,15 +188,15 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Are you ready?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Seleccione "Cerrar sesión" si está listo para finalizar su sesión actual</div>
+        <div class="modal-body">Press "Logout" if you are ready to leave</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="{% url 'account:logout' %}">Cerrar sesión</a>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="{% url 'account:logout' %}">Logout</a>
         </div>
       </div>
     </div>
