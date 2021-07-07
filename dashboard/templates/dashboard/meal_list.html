@@ -2,6 +2,15 @@
 
 {% block content %}
 
+{% block custom_head %}
+
+<style>
+
+.sweet-overlay{z-index:5000!important;}
+.sweet-alert{z-index:5001!important;}
+
+</style>
+{% endblock custom_head %}
 <div id="create_container"></div>
 <div id="edit_container"></div>
 <div id="wrapper">
@@ -31,17 +40,6 @@
                                 <th>Action</th>
                             </tr>
                         </tfoot>
-                        <tbody>
-                            {% for i, meal in object_list %}
-                            <tr>
-                                <td>{{ meal.title }}</td>
-                                <td>
-                                    <button class="btn btn-primary" onClick="prepareModal({model: 'meal',mode: 'edit', modal_container: 'edit_container'}, {{ meal.id }})">Edit</button>
-                                    <button class="btn btn-danger" onClick="deleteMeal({{ meal.id }})">Delete</button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -58,15 +56,13 @@
             return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
         }
         const str = "{{ partial_names|safe }}";
-        const scaped = replaceAll(str, "'", "\"");
-        const partials = JSON.parse(scaped);
+        const partials = JSON.parse(replaceAll(str, "'", "\""));
         const BASE_URL = '{{ base_url }}';
+        var TABLE = $('#dataTable');
+        var TABLE_RENDERED;
+
         console.log(partials);
-        function addCreateEditListener(mode){
-            $(`#${partials[mode].form_id}`).on("submit", function(e){
-                saveMeal(e, mode, `${mode}_container`);
-            });
-        }
+
 
 
 
@@ -82,6 +78,8 @@
                 $(`#${modal_container}`).html(result);
                 $(`#${partials[mode].modal_id}`).modal('show');
                 addCreateEditListener(mode);
+                modalOnClose(partials[mode].modal_id);
+
             }).fail((result, xhr, x2) => {
                 Swal.fire({
                   title: 'Modal failed!',
@@ -118,15 +116,16 @@
             );
             request.done( async(result) => {
                 console.log(result);
-                $(`#${partials[mode].modal_id}`).modal('hide');
-                $(`#${modal_container}`).html('');
-                //document.removeEventListener('submit');
                 await Swal.fire({
                   title: 'Action successful!',
                   text: 'OK!',
                   icon: 'success',
                 });
-                window.location.href = ''
+                $(`#${partials[mode].modal_id}`).modal('hide');
+                $(`#${modal_container}`).html('');
+                $(".modal-backdrop").remove();
+                unbindTableEventListener();
+                TABLE_RENDERED.ajax.reload();
             });
             request.fail((result, xhr, x2) => {
                 const res = JSON.parse(result.responseText);
@@ -135,6 +134,8 @@
                       title: 'Record failed!',
                       text: res.detail,
                       icon: 'error',
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
                     });
                 }
 
@@ -156,15 +157,18 @@
                         method: 'DELETE',
                         dataType: 'application/json',
                     }
-                ).done((result, xhr, x2) => {
+                ).done(async (result, xhr, x2) => {
                     if(x2.status == 204){
                         //refresh table
-                        Swal.fire({
+                        await Swal.fire({
                           title: 'Deletion successful!',
                           text: 'OK!',
                           icon: 'success',
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
                         });
-                        window.location.href = ''
+                        unbindTableEventListener();
+                        TABLE_RENDERED.ajax.reload();
                     }
                 }).fail((result, xhr, x2) => {
                     const res = JSON.parse(result.responseText)
@@ -172,10 +176,96 @@
                       title: 'Deletion failed!',
                       text: res.detail,
                       icon: 'error',
+                      allowOutsideClick: false,
+                      allowEscapeKey: false,
                     });
                 });
             }
 
+        }
+        $(document).ready(function(){
+            createTable();
+
+        });
+
+        function modalOnClose(modalId){
+            $(`#${modalId}`).on('hidden.bs.modal', function (e) {
+                // do something when this modal window is closed...
+                $(".modal-backdrop.fade.show").remove();
+            });
+        }
+
+        function renderEditBtn(id){
+            return `<button class="btn btn-primary edit-btn" data-modelId="${id}">Edit</button>`
+        }
+        function renderDeleteBtn(id){
+            return `<button class="btn btn-danger delete-btn" data-modelId="${id}">Delete</button>`
+        }
+
+        function addCreateEditListener(mode){
+            $(`#${partials[mode].form_id}`).on("submit", function(e){
+                saveMeal(e, mode, `${mode}_container`);
+            });
+        }
+
+        function bindTableEventListener(){
+            $("button.edit-btn").on('click', (event) => {
+                prepareModal(
+                    {model: 'meal',mode: 'edit', modal_container: 'edit_container'},
+                    $(event.target).data('modelid')
+                 )
+            });
+            $("button.delete-btn").on('click', (event) => {
+                deleteMeal($(event.target).data('modelid'))
+            });
+        }
+
+        function unbindTableEventListener(){
+            $("body").off("click", ".edit-btn");
+            $("body").off("click", ".delete-btn");
+        }
+
+        function createTable(){
+            const url = `${BASE_URL}/api/meals/`;
+            TABLE_RENDERED = TABLE.DataTable({
+                "ajax": {
+                    "url": url,
+                    "dataType": "json",
+                    "cache": false,
+                    "dataSrc": ""
+                },
+                "columns": [
+                    {
+                        data: 'Title',
+                        render: function(data, type, row, meta){
+                            return row.title
+                        }
+                    },
+                    {
+                        data: 'Action',
+                        render: function(data, type, row, meta){
+                            const editBtn = renderEditBtn(row.id);
+                            const deleteBtn = renderDeleteBtn(row.id);
+                            return `${editBtn} &nbsp; ${deleteBtn}`
+                        }
+                    },
+                ],
+                'searching': true,
+                "destroy": true,
+                "pagination": true,
+                "bPaginate": false,
+                "formatNumber": function ( toFormat ) {
+                    return toFormat.toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, "'"
+                        );
+                },
+                "bLengthChange": false,
+                "order": [[ 0, "desc" ]],
+                "autoWidth": false,
+                "drawCallback": function( settings ) {
+                    bindTableEventListener();
+                }
+            });
         }
     </script>
   {% endblock js %}

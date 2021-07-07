@@ -35,7 +35,7 @@ class SignUp(FormView):
                 )
                 token.send_confirmation_email()
             except ExistingUserEmailException:
-                form.add_error('email', 'El email ya se encuentra registrado')
+                form.add_error('email', 'Email already registered')
                 return super(SignUp, self).form_invalid(form)
             else:
                 return super(SignUp, self).form_valid(form)

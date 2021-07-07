@@ -10,6 +10,11 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Please choose one!</h6>
+                {% if form.errors.scheduled_at %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.errors.scheduled_at.0 }}
+                </div>
+                {% endif %}
             </div>
             <div class="card-body">
                 <div class="table-responsive">

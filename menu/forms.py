@@ -10,7 +10,9 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('meal', 'name', 'email', 'suggestion')
+        fields = ('meal', 'name', 'email', 'suggestion', 'scheduled_at')
+
+    scheduled_at = forms.CharField(max_length=1, required=False)
 
     meal = forms.CharField(
         max_length=50,

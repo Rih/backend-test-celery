@@ -41,10 +41,8 @@ class Menu(models.Model):
         # TODO: implement pre_delete to unlink a current task
         if self.deleted_at:
             return
-        
-        import pdb; pdb.set_trace()
         ar = AsyncResult(self.taskmenu.celery_task_id)
-        ar.get(on_message=on_msg, propagate=False)
+        # ar.get(on_message=on_msg, propagate=False)
         if not ar.status == 'SUCCESS':
             ar.revoke()
         self.deleted_at = timezone.now()

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 import logging
 from celery import Task
-from celery.contrib import rdb
+# from celery.contrib import rdb
 from dashboard.models import Menu
 from dashboard.bot import SlackReminder
 from backend_test.celery import app

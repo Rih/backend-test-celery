@@ -64,8 +64,7 @@
             return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
         }
         const str = "{{ partial_names|safe }}";
-        const scaped = replaceAll(str, "'", "\"");
-        const partials = JSON.parse(scaped);
+        const partials = JSON.parse(replaceAll(str, "'", "\""));
         const BASE_URL = '{{ base_url }}';
         console.log(partials);
         function addCreateListener(mode){

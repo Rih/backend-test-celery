@@ -13,15 +13,11 @@ from menu.models import Order
 # Create your views here.
 
 
-class MealListView(ListView):
+class MealListView(TemplateView):
     template_name = 'dashboard/meal_list.html'
-    model = Meal
-    queryset = Meal.objects.actives()
-    fields = ['title']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = enumerate(context['object_list'])
         context['partial_names'] = MODEL_TO_MODAL_NAMES['meal']
         return context
 
@@ -44,9 +40,8 @@ class MenuListView(ListView):
 menu_list_view = login_required(MenuListView.as_view())
 
 
-class IndexView(ListView):
+class IndexView(TemplateView):
     template_name = 'dashboard/index.html'
-    model = Meal
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

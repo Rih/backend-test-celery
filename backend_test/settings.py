@@ -277,6 +277,14 @@ SERVER_EMAIL = 'noreply@sistematiza.cl'
 # EMAIL_HOST = 'smtp.google.com'
 EMAIL_HOST = 'smtp.mandrillapp.com'  # 'smtp-relay.sendinblue.com'
 
+# 9:15 AM
+SCHEDULE_MENU_TIME = {
+    'hours': 9,  # use: 0 to 23
+    'minutes': 45,  # use: 0 to 59
+}
+
+# 11:00 AM
+MAX_HOUR_TO_ORDER = 11
 
 # EMAIL_USE_SSL = True
 # EMAIL_PORT = 465  # SSL
