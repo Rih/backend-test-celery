@@ -20,6 +20,11 @@ def on_msg(body):
     print(body)
 
 
+def current_date():
+    today = dt.utcnow()
+    return today
+
+
 # method for schedule async after menu is created
 @receiver(post_save, sender=Menu, dispatch_uid="schedule_menu_signal")
 def schedule_menu(sender, instance, created, **kwargs):
@@ -27,7 +32,9 @@ def schedule_menu(sender, instance, created, **kwargs):
         # omit menus for tests
         if str(instance.pk.urn[9:]) not in FAKE_MENU_IDS:
             scheduled = instance.scheduled_at
-            today = dt.utcnow()
+            if not scheduled:
+                return
+            today = current_date()
             schedule_time = settings.SCHEDULE_MENU_TIME
             delta = timedelta(**schedule_time)
             near_future = dt.combine(
@@ -48,7 +55,7 @@ def schedule_menu(sender, instance, created, **kwargs):
                 celery_task_id=task
             )
             return near_future
-        else:
-            print('Not sending scheduled menu')
-            # task()
-            # task.apply_async(eta=tomorrow)
+        print('Not sending scheduled menu')
+        return None
+        # task()
+        # task.apply_async(eta=tomorrow)

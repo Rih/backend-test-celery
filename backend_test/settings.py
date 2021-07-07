@@ -141,7 +141,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-US"
 
 TIME_ZONE = "UTC"
 
@@ -284,7 +284,8 @@ SCHEDULE_MENU_TIME = {
 }
 
 # 11:00 AM
-MAX_HOUR_TO_ORDER = 11
+MAX_HOUR_TO_ORDER = 11  # use: 0 to 23
+UTC_TZ_OFFSET = -4  # for chile
 
 # EMAIL_USE_SSL = True
 # EMAIL_PORT = 465  # SSL

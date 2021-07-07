@@ -13,6 +13,7 @@ urlpatterns = [
     path('/menus/create/', views.menu_partial_view, name='menus_create'),
     # path('/meal/<int:pk>', views.meal_view, name='meal'),
     path('/menus', views.menu_list_view, name='menus'),
+    path('/menu/create', views.menu_list_view, name='menu-create'),
     path('/orders', views.order_view, name='orders'),
 
 ]

@@ -20,35 +20,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">All Menus</h6>
             </div>
             <div class="card-body">
-                <div id="accordion">
-                    {% for i, menu in object_list %}
-                      <div class="card">
-                        <div class="card-header" id="{{ menu.id }}">
-                          <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse{{ menu.id }}" aria-expanded="false" aria-controls="collapse{{ menu.id }}">
-                               Menu day: {{ menu.scheduled_at|date:'Y-m-d' }}
-                            </button>
-                              <button class="btn btn-danger float-right" onClick="deleteMenu('{{ menu.id }}')">
-                                  <i class="fa fa-trash" aria-hidden="true"></i>
-                              </button>
-                          </h5>
-                        </div>
-                        <div id="collapse{{ menu.id }}" class="collapse" aria-labelledby="{{ menu.id }}" data-parent="#accordion">
-                          <div class="card-body">
-                              ID: ({{ menu.id }})
-                            <ul>
-                                {% for meal in menu.meals.all %}
-                                <li>
-                                    {{ meal.title }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    {% endfor %}
-                </div>
-
+                <div id="accordion"></div>
             </div>
         </div>
     </div>
@@ -68,6 +40,7 @@
         const BASE_URL = '{{ base_url }}';
         console.log(partials);
         function addCreateListener(mode){
+            $("body").off("submit", `#${partials[mode].form_id}`);
             $(`#${partials[mode].form_id}`).on("submit", function(e){
                 saveMenu(e, mode, `${mode}_container`);
             });
@@ -87,6 +60,7 @@
                 $(`#${modal_container}`).html(result);
                 $(`#${partials[mode].modal_id}`).modal('show');
                 addCreateListener(mode);
+                modalOnClose(partials[mode].modal_id);
             }).fail((result, xhr, x2) => {
                 Swal.fire({
                   title: 'Modal failed!',
@@ -109,8 +83,7 @@
 
         function saveMenu(event, mode, modal_container){
             event.preventDefault();
-            const modelId = $(event.target).data('modelId');
-            const url = (modelId) ? `${BASE_URL}/api/menus/${modelId}/` : `${BASE_URL}/api/menus/`;
+            const url = `${BASE_URL}/api/menus/`;
             const form = $(event.target);
             const data = form.serialize();
             const request = $.ajax(
@@ -123,15 +96,16 @@
             );
             request.done( async(result) => {
                 console.log(result);
-                $(`#${partials[mode].modal_id}`).modal('hide');
-                $(`#${modal_container}`).html('');
-                //document.removeEventListener('submit');
                 await Swal.fire({
                   title: 'Action successful!',
                   text: 'OK!',
                   icon: 'success',
                 });
-                window.location.href = ''
+                $(`#${partials[mode].modal_id}`).modal('hide');
+                $(`#${modal_container}`).html('');
+                $(".modal-backdrop").remove();
+                $("#page-top").removeClass("modal-open");
+                renderRecords();
             });
             request.fail((result, xhr, x2) => {
                 const res = JSON.parse(result.responseText);
@@ -169,7 +143,7 @@
                           text: 'OK!',
                           icon: 'success',
                         });
-                        window.location.href = ''
+                        renderRecords();
                     }
                 }).fail((result, xhr, x2) => {
                     const res = JSON.parse(result.responseText)
@@ -180,7 +154,38 @@
                     });
                 });
             }
+        }
 
+        function renderCardContainer(rows){
+            return rows.map( row => {
+                return (`<div class="card">
+                <div class="card-header" id="${row.id}">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse${row.id}" aria-expanded="false" aria-controls="collapse${row.id}">
+                       Menu day: ${row.scheduled_at}
+                    </button>
+                      <button class="btn btn-danger float-right delete-btn" data-rowid="${row.id}">
+                          <i class="fa fa-trash" aria-hidden="true" data-rowid="${row.id}"></i>
+                      </button>
+                  </h5>
+                </div>
+                <div id="collapse${row.id}" class="collapse" aria-labelledby="${row.id}" data-parent="#accordion">
+                  <div class="card-body">
+                      ID: (${row.id})
+                    <ul>
+                        ${renderRowMenu(row)}
+                    </ul>
+                  </div>
+                </div>
+              </div>`);
+            }).join('');
+
+        }
+
+        function renderRowMenu(row){
+            return row.meals.map( meal => {
+                return `<li>${meal.title}</li>`;
+            }).join('');
         }
         function initSelect2(target){
             $(target).select2({
@@ -190,6 +195,34 @@
             });
         }
 
+        function renderRecords(){
+            const url = `${BASE_URL}/api/menu-list/`;
+            $.ajax(
+                {
+                    url: url,
+                    method: 'GET',
+                    dataType: 'json',
+                }
+            ).done((result, xhr, x2) => {
+                $("#accordion").html(renderCardContainer(result));
+                bindDeleteListener();
+            });
+
+        }
+
+        function bindDeleteListener(){
+            unbindDeleteListener();
+            $("button.delete-btn").on("click", (event) => {
+                const id = $(event.target).data("rowid");
+                deleteMenu(id);
+            });
+        }
+        function unbindDeleteListener(){
+            $("body").off("click", ".delete-btn");
+        }
+        $(document).ready(function(){
+            renderRecords();
+        });
     </script>
   {% endblock js %}
 

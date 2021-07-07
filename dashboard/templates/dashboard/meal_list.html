@@ -1,5 +1,5 @@
 {% extends "base-admin.html" %}
-
+{% load i18n %}
 {% block content %}
 
 {% block custom_head %}
@@ -23,7 +23,7 @@
         </div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Meals</h6>
+                <h6 class="m-0 font-weight-bold text-primary">{% trans "all_meals" %}</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -60,11 +60,6 @@
         const BASE_URL = '{{ base_url }}';
         var TABLE = $('#dataTable');
         var TABLE_RENDERED;
-
-        console.log(partials);
-
-
-
 
         function openModal(url, params){
             const { modal_container, mode } = params;
@@ -124,6 +119,7 @@
                 $(`#${partials[mode].modal_id}`).modal('hide');
                 $(`#${modal_container}`).html('');
                 $(".modal-backdrop").remove();
+                $("#page-top").removeClass("modal-open");
                 unbindTableEventListener();
                 TABLE_RENDERED.ajax.reload();
             });
@@ -196,10 +192,14 @@
         }
 
         function renderEditBtn(id){
-            return `<button class="btn btn-primary edit-btn" data-modelId="${id}">Edit</button>`
+            return `<button class="btn btn-primary edit-btn" data-modelId="${id}">
+                <i class="fa fa-edit" aria-hidden="true" data-rowid="${id}"></i>
+            </button>`
         }
         function renderDeleteBtn(id){
-            return `<button class="btn btn-danger delete-btn" data-modelId="${id}">Delete</button>`
+            return `<button class="btn btn-danger delete-btn" data-modelId="${id}">
+                <i class="fa fa-trash" aria-hidden="true" data-rowid="${id}"></i>
+            </button>`
         }
 
         function addCreateEditListener(mode){

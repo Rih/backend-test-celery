@@ -1,1 +1,16 @@
-DONE
+{% extends "base-empty.html" %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-3">Thank You!</h1>
+  <p class="lead"><strong>We will inform you when your meal is ready.</p>
+  <hr>
+  <p>
+    Having trouble? <a href="mailto:drigox90rih@gmail.com">Contact us</a>
+  </p>
+  <p class="lead">
+    <a class="btn btn-primary btn-sm" href="{% url 'menu:index' %}" role="button">Continue to index</a>
+  </p>
+</div>
+
+{% endblock content %}

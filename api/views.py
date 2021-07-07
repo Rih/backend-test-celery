@@ -26,6 +26,12 @@ class MenuReadViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.actives()
 
 
+class MenuViewListSet(viewsets.ModelViewSet):
+    serializer_class = MenuModelListSerializer
+    permission_classes = [IsAuthenticated, ]
+    queryset = Menu.objects.latest_first()
+
+
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuModelSerializer
     permission_classes = [IsAuthenticated, ]

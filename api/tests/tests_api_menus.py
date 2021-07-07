@@ -35,7 +35,7 @@ class ApiMenuTest(TestCase):
     @tag('api_menu_list')
     def tests_api_menu_list(self):
         # python manage.py test --tag=api_menu_list
-        url = reverse('api:menu_list_action-list')
+        url = reverse('api:menulist_action-list')
         self.client.login(username='jhon', password='pass')
         res = self.client.get(
             url,

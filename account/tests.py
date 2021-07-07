@@ -70,7 +70,7 @@ class AccountTest(TestCase):
             follow=True
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'El email ya se encuentra registrado')
+        self.assertContains(response, 'Email already registered')
 
     @tag('get_login')
     def test_get_login(self):

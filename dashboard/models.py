@@ -5,6 +5,7 @@ from django.db import models
 from dashboard.managers import MealManager, MenuManager
 from django.utils import timezone
 from celery.result import AsyncResult
+from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 
 
@@ -41,10 +42,13 @@ class Menu(models.Model):
         # TODO: implement pre_delete to unlink a current task
         if self.deleted_at:
             return
-        ar = AsyncResult(self.taskmenu.celery_task_id)
-        # ar.get(on_message=on_msg, propagate=False)
-        if not ar.status == 'SUCCESS':
-            ar.revoke()
+        try:
+            ar = AsyncResult(self.taskmenu.celery_task_id)
+            # ar.get(on_message=on_msg, propagate=False)
+            if not ar.status == 'SUCCESS':
+                ar.revoke()
+        except ObjectDoesNotExist as e:
+            print('Related not exists', str(e))
         self.deleted_at = timezone.now()
         self.save()
 

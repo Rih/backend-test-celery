@@ -30,10 +30,13 @@ class MenuView(FormView):
         self.request.session['email'] = form.cleaned_data['email']
         menu = Menu.objects.get(pk=self.kwargs['pk'])
         today = dt.utcnow()
-        if today.date() > menu.scheduled_at:  # TODO: add test
-            form.add_error('scheduled_at', 'Menu is from the past, are you a time traveler?')
+        if today.date() > menu.scheduled_at:
+            form.add_error(
+                'scheduled_at',
+                'Menu is from the past, are you a time traveler?'
+            )
             return super().form_invalid(form)
-        if today.hour >= settings.MAX_HOUR_TO_ORDER:  # TODO: add test
+        if today.hour + settings.UTC_TZ_OFFSET >= settings.MAX_HOUR_TO_ORDER:
             form.add_error('scheduled_at', 'Not a valid time')
             return super().form_invalid(form)
         if form.is_valid():

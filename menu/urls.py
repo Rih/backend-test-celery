@@ -8,9 +8,16 @@ from menu import views
 app_name = 'menu'
 
 urlpatterns = [
+    path(
+        '',
+        TemplateView.as_view(
+            template_name='menu/landing.html'
+        ),
+        name='index'
+    ),
     path('menu/<str:pk>', views.public_menu_view, name='menu_list'),
     path(
-        'menu-done',
+        'order/done',
         TemplateView.as_view(
             template_name='menu/done.html'
         ),
