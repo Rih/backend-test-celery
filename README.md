@@ -119,6 +119,10 @@ m* Run inside backend container: `dev up`
 
 * Run inside backend container: `sh bin/run-coverages.sh report_name_file.txt`
 
+### Run celery
+
+* Run inside backend container: `/docker-entrypoint.sh celery`
+
 ### About schedule a Menu
 
 * in backend_test/settings.py you can change these values
