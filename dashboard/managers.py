@@ -17,7 +17,7 @@ class BaseManager(models.Manager):
         return qset.filter(deleted_at=None, author_id=user.id)
 
     def latest_first(self, user):
-        qset = self.actives().filter(author_id=user.id)
+        qset = self.actives(user)
         return qset.order_by('-scheduled_at')
 
     def all(self):

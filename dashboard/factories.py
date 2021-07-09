@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import factory
 from datetime import datetime as dt
+from django.db.models.signals import post_save
 from dashboard.models import Meal, Menu
 
 
@@ -12,6 +13,7 @@ class MealFactory(factory.django.DjangoModelFactory):
     title = 'Chicken with potatoe chips'
 
 
+@factory.django.mute_signals(post_save)
 class MenuFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Menu

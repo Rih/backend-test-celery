@@ -15,7 +15,6 @@ class SlackBot:
 
     def __init__(self, **kwargs):
         self.CHANNEL = kwargs.get('CHANNEL', settings.SLACK_CHANNEL_ID)
-        print('using: ', self.TOKEN, self.CHANNEL)
         self.BASE_URL = 'https://api.slack.com'
         self.h = {
             'Authorization': f'Bearer {self.TOKEN}',
@@ -23,7 +22,6 @@ class SlackBot:
         }
 
     def send(self, text: str):
-        # url = 'https://hooks.slack.com/services/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'
         endpoint = '/api/chat.postMessage'
         payload = {
             'channel': self.CHANNEL,
@@ -34,9 +32,7 @@ class SlackBot:
             headers=self.h,
             data=json.dumps(payload)
         )
-        print(response)
         result = response.json()
-        print(result)
         return result
 
 
@@ -72,7 +68,6 @@ class SlackReminder:
 
     def send(self, menu_options: list, menu_id: str) -> dict:
         text = self.construct_msg(self.create_options(menu_options), menu_id)
-        print(text)
         result = self.bot.send(text)
         return result
 

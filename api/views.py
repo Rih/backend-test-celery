@@ -27,7 +27,7 @@ class MenuReadViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return Menu.objects.actives(self.request.user)
+        return Menu.objects.latest_first(self.request.user)
 
 
 class MenuViewListSet(viewsets.ModelViewSet):

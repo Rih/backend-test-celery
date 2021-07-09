@@ -74,7 +74,7 @@
 ```
 
 
-## Settings
+## Setting up!
 
 ### IMPORTANT: Complete environment vars defined in env.example
 ```
@@ -93,11 +93,11 @@ SLACK_CHANNEL=
 ### Running the development environment
 
 * `make up`
-* run inside backend container: `dev up`
 
 ### After creating development environment
-
-- run inside backend container: `sh bin/load-init.sh` 
+* Run inside backend container: `sh bin/init-migrations.sh`
+* Run inside backend container: `sh bin/load-init.sh` 
+m* Run inside backend container: `dev up`
 
 ##### Rebuilding the base Docker image
 
@@ -110,5 +110,13 @@ SLACK_CHANNEL=
 ### Hostnames for accessing the service directly
 
 * Local: http://127.0.0.1:8000
+
+### Run all tests
+
+* Run inside backend container: `sh bin/run-tests.sh`
+
+### Run coverage
+
+* Run inside backend container: `sh bin/run-coverages.sh report_name_file.txt`
 
 
