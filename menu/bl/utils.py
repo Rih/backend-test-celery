@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 # Standard libs
-from datetime import datetime as dt
 # Django libs
 from django.conf import settings
 from dashboard.models import Menu

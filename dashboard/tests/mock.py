@@ -1,5 +1,3 @@
-from datetime import datetime as dt
-
 
 BOT_RESPONSE = {
     'success': {

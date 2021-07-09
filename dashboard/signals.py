@@ -25,7 +25,7 @@ def schedule_menu(sender, instance, created, **kwargs):
         # omit menus for tests
         scheduled = instance.scheduled_at
         if omit_menues(instance) or not scheduled:
-            print('Not sending scheduled menu')
+            logger.info('Not sending scheduled menu')
             return
         near_future = get_near_future_task(scheduled)
         task = schedule_menu_process.apply_async(
@@ -33,10 +33,6 @@ def schedule_menu(sender, instance, created, **kwargs):
             eta=near_future,
             retry=False,
         )
-        # task = schedule_menu_process.apply_async(
-        #   menu_id=instance.pk,
-        #   countdown=10
-        #   )
         TaskMenu.objects.create(
             menu=instance,
             celery_task_id=task
