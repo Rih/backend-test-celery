@@ -49,8 +49,8 @@ INSTALLED_APPS = [
     "django_extensions",
     "drf_yasg",
     "backend_test.utils",
-    # custom apps
     "captcha",
+    # custom apps
     "account",
     "dashboard",
     "menu",

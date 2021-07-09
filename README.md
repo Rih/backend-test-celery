@@ -1,5 +1,34 @@
 ## cornershop-backend-test
 
+### Stack & Technologies
+
+- backend
+    * Docker
+    * Python 3.8
+    * Django
+    * PostgreSQL
+    * Redis
+    * Jupyterlab
+    * Recaptcha
+
+- frontend
+    * Bootstrap
+    * [SB Admin](https://startbootstrap.com/theme/sb-admin-2)
+    * Jquery
+    * Select2
+
+
+### Libraries & 3rd parties
+* Django restframework
+* Swagger
+* Flake
+
+
+### API Rest doc
+
+* Local: http://127.0.0.1:8000/swagger/
+
+
 ## App structure tree
 ```
 |__ account
