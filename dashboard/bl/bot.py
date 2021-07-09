@@ -56,9 +56,8 @@ class SlackReminder:
         self.bot = SlackBot()
 
     def create_options(self, options) -> list:
-        list(enumerate(options))
         opts = [
-            f'Option {i + 1}: {o}' for i, o in enumerate(options)
+            f'Option {i + 1}: {opt}' for i, opt in enumerate(options)
         ]
         return opts
 

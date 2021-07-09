@@ -16,6 +16,7 @@ from dashboard.tests.mock import RequestMock
 class ScheduleTest(TestCase):
 
     fixtures = [
+        'user',
         'meal',
         'order',
         'site'

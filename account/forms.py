@@ -3,16 +3,18 @@ from __future__ import unicode_literals
 # Standard libs
 from django import forms
 from captcha.fields import ReCaptchaField
+# Own libs
+from account.bl.data import FORMS_PLACEHOLDER
 
 
 class SignupForm(forms.Form):
-
+    placeholder = FORMS_PLACEHOLDER['signup']
     first_name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Name'
+                'placeholder': placeholder['first_name']
             }
         )
     )
@@ -21,17 +23,16 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Lastname'
+                'placeholder': placeholder['last_name']
             }
         )
     )
-
     email = forms.EmailField(
         max_length=100,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Email'
+                'placeholder': placeholder['email']
             }
         )
     )
@@ -40,7 +41,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Password here',
+                'placeholder': placeholder['password'],
                 'type': 'password',
                 'autocomplete': 'off'
             }
@@ -51,12 +52,13 @@ class SignupForm(forms.Form):
 
 class LoginForm(forms.Form):
 
+    placeholder = FORMS_PLACEHOLDER['login']
     email = forms.EmailField(
         max_length=100,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Email'
+                'placeholder': placeholder['email']
             }
         )
     )
@@ -65,7 +67,7 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Contraseña',
+                'placeholder': placeholder['password'],
                 'type': 'password',
                 'autocomplete': 'off'
             }

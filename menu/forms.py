@@ -4,45 +4,43 @@ from __future__ import unicode_literals
 from django import forms
 from dashboard.models import Meal
 from menu.models import Order
+from menu.bl.data import FORMS_PLACEHOLDER
 
 
 class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('meal', 'name', 'email', 'suggestion', 'scheduled_at')
+        fields = ('meal', 'name', 'email', 'suggestion')
 
-    scheduled_at = forms.CharField(max_length=1, required=False)
-
+    placeholder = FORMS_PLACEHOLDER['order']
     meal = forms.CharField(
         max_length=50,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control mb-4',
-                'placeholder': 'Your Meal',
+                'placeholder': placeholder['meal'],
                 'required': True,
             }
         )
     )
-
     name = forms.CharField(
         max_length=50,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control mb-4',
-                'placeholder': 'Your Name',
+                'placeholder': placeholder['name'],
                 'required': True,
             }
         )
     )
-
     email = forms.EmailField(
         max_length=50,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control  mb-4',
                 'type': 'email',
-                'placeholder': 'Your Email',
+                'placeholder': placeholder['email'],
                 'required': True,
             }
         )
@@ -53,7 +51,7 @@ class OrderForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 'class': 'form-control ',
-                'placeholder': 'Additional info (e.g. No ketchup and more rice)',
+                'placeholder': placeholder['suggestion'],
                 'rows': 3,
             }
         )

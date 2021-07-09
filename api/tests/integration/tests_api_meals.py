@@ -16,6 +16,7 @@ from dashboard.factories import MealFactory
 )
 class ApiMealTest(TestCase):
     fixtures = [
+        'user',
         'meal',
         'site'
     ]
@@ -35,7 +36,7 @@ class ApiMealTest(TestCase):
     def tests_api_meal_list(self):
         # python manage.py test --tag=api_meal_list
         url = reverse('api:meals_action-list')
-        self.client.login(username='jhon', password='pass')
+        self.client.login(username='root@admin.cl', password='JAHc73yc63gcya')
         res = self.client.get(
             url,
             content_type='application/json'
@@ -46,7 +47,7 @@ class ApiMealTest(TestCase):
         self.assertTrue(len(result) > 0)
         self.assertListEqual(
             list(result[0].keys()),
-            ['id', 'title', 'modified_at', 'deleted_at']
+            ['id', 'title', 'modified_at', 'deleted_at', 'author']
         )
 
     @tag('api_meal_create')
@@ -54,7 +55,8 @@ class ApiMealTest(TestCase):
         # python manage.py test --tag=api_meal_create
         url = reverse('api:meals_action-list')
         payload = {
-            'title': 'Ham with Mayo'
+            'title': 'Ham with Mayo',
+            'author': self.user.id,
         }
         # logout protected
         self.client.logout()
@@ -81,7 +83,7 @@ class ApiMealTest(TestCase):
         self.assertEquals(res.status_code, 201)
         self.assertListEqual(
             list(result.keys()),
-            ['id', 'title', 'modified_at', 'deleted_at']
+            ['id', 'title', 'modified_at', 'deleted_at', 'author']
         )
         self.assertTrue(result['id'] > 0)
         self.assertEquals(result['title'], 'Ham with Mayo')
@@ -99,7 +101,7 @@ class ApiMealTest(TestCase):
     @tag('api_meal_edit')
     def tests_api_meal_edit(self):
         # python manage.py test --tag=api_meal_edit
-        a_meal = MealFactory()
+        a_meal = MealFactory(author=self.user)
         a_meal.save()
         url = reverse('api:meals_action-detail', kwargs={'pk': a_meal.id})
         payload = {
@@ -130,7 +132,7 @@ class ApiMealTest(TestCase):
         self.assertEquals(res.status_code, 200)
         self.assertListEqual(
             list(result.keys()),
-            ['id', 'title', 'modified_at', 'deleted_at']
+            ['id', 'title', 'modified_at', 'deleted_at', 'author']
         )
         self.assertEqual(result['id'], a_meal.id)
         self.assertEquals(result['title'], 'Mayo please')
@@ -148,7 +150,7 @@ class ApiMealTest(TestCase):
     @tag('api_meal_delete')
     def tests_api_meal_delete(self):
         # python manage.py test --tag=api_meal_delete
-        a_meal = MealFactory()
+        a_meal = MealFactory(author=self.user)
         a_meal.save()
         url = reverse('api:meals_action-detail', kwargs={'pk': a_meal.id})
         # logout protected

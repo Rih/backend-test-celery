@@ -16,6 +16,7 @@ from dashboard.factories import MenuFactory, MealFactory
 )
 class ApiMenuTest(TestCase):
     fixtures = [
+        'user',
         'meal',
         'menu',
         'site'
@@ -35,6 +36,12 @@ class ApiMenuTest(TestCase):
     @tag('api_menu_list')
     def tests_api_menu_list(self):
         # python manage.py test --tag=api_menu_list
+        menus = [
+            MenuFactory(
+                meals=[1, 2],
+                author=self.user
+            ) for m in range(10)
+        ]
         url = reverse('api:menulist_action-list')
         self.client.login(username='jhon', password='pass')
         res = self.client.get(
@@ -44,16 +51,19 @@ class ApiMenuTest(TestCase):
         result = json.loads(res.content)
         # success case
         self.assertEquals(res.status_code, 200)
-        self.assertTrue(len(result) > 0)
+        self.assertTrue(len(result) == len(menus))
         self.assertListEqual(
             list(result[0].keys()),
-            ['id', 'meals', 'scheduled_at']
+            ['id', 'meals', 'scheduled_at', 'author']
         )
 
     @tag('api_menu_delete')
     def tests_api_menu_delete(self):
         # python manage.py test --tag=api_menu_delete
-        a_menu = MenuFactory()
+        a_menu = MenuFactory(
+            meals=[1, 2],
+            author=self.user
+        )
         a_menu.save()
         url = reverse('api:menus_action-detail', kwargs={'pk': a_menu.id})
         # logout protected
@@ -84,6 +94,7 @@ class ApiMenuTest(TestCase):
 )
 class ApiMenuCreateTest(TestCase):
     fixtures = [
+        'user',
         'meal',
         'site'
     ]
@@ -102,12 +113,17 @@ class ApiMenuCreateTest(TestCase):
     @tag('api_menu_create')
     def tests_api_menu_create(self):
         # python manage.py test --tag=api_menu_create
-        meals = [MealFactory(title=f'opcion {m + 1}') for m in range(5)]
+        meals = [
+            MealFactory(
+                title=f'opcion {m + 1}',
+                author=self.user,
+            ) for m in range(5)]
         # schedule = timezone.now().strftime("%Y-%m-%d")
         url = reverse('api:menus_action-list')
         payload = {
             'meals': [m.id for m in meals],
-            'scheduled_at': '2021-07-04'
+            'scheduled_at': '2021-07-04',
+            'author': self.user.id,
         }
         # logout protected
         self.client.logout()
@@ -134,7 +150,7 @@ class ApiMenuCreateTest(TestCase):
         self.assertEquals(res.status_code, 201)
         self.assertListEqual(
             list(result.keys()),
-            ['id', 'scheduled_at', 'created_at', 'deleted_at', 'meals']
+            ['id', 'scheduled_at', 'created_at', 'deleted_at', 'author', 'meals']
         )
         self.assertEquals(len(result['id']), 36)
         self.assertEquals(result['scheduled_at'], '2021-07-04')

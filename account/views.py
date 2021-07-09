@@ -16,7 +16,8 @@ from django.views.generic.edit import FormView
 from .exceptions import ExistingUserEmailException
 from .forms import LoginForm, SignupForm
 from .models import EmailToken
-from .utils import create_user
+from account.bl.utils import create_user
+from account.bl.data import ERROR_MESSAGES
 
 
 # Create your views here.
@@ -34,8 +35,8 @@ class SignUp(FormView):
                     user=user
                 )
                 token.send_confirmation_email()
-            except ExistingUserEmailException:
-                form.add_error('email', 'Email already registered')
+            except ExistingUserEmailException as e:
+                form.add_error('email', e.error_msg())
                 return super(SignUp, self).form_invalid(form)
             else:
                 return super(SignUp, self).form_valid(form)
@@ -69,13 +70,13 @@ class LoginView(FormView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            form.add_error(None, 'Invalid credentials')
+            form.add_error(None, ERROR_MESSAGES['invalid_creds'])
             return super(LoginView, self).form_invalid(form)
         user = authenticate(username=user.username, password=password)
         if user is not None:
             login(self.request, user)
         else:
-            form.add_error(None, 'Invalid credentials')
+            form.add_error(None, ERROR_MESSAGES['invalid_creds'])
             return super(LoginView, self).form_invalid(form)
         return super(LoginView, self).form_valid(form)
 

@@ -1,0 +1,51 @@
+Name                             Stmts   Miss  Cover   Missing
+--------------------------------------------------------------
+account/__init__.py                  0      0   100%
+account/admin.py                     0      0   100%
+account/apps.py                      3      3     0%   1-5
+account/exceptions.py                2      0   100%
+account/factories.py                19      0   100%
+account/forms.py                    13      0   100%
+account/models.py                   25      0   100%
+account/urls.py                      7      0   100%
+account/utils.py                    14      0   100%
+account/views.py                    89      5    94%   58, 121-123, 129
+api/__init__.py                      0      0   100%
+api/admin.py                         0      0   100%
+api/apps.py                          3      3     0%   1-5
+api/models.py                        0      0   100%
+api/urls.py                          9      0   100%
+api/views.py                        25      1    96%   38
+backend_test/__init__.py             0      0   100%
+backend_test/celery.py              35      0   100%
+backend_test/conftest.py             5      5     0%   1-8
+backend_test/envtools.py            12      0   100%
+backend_test/middleware.py          16      1    94%   9
+backend_test/tasks.py               16      1    94%   19
+backend_test/urls.py                 6      0   100%
+backend_test/utils/__init__.py       0      0   100%
+backend_test/utils/healthz.py        8      1    88%   14
+dashboard/__init__.py                1      0   100%
+dashboard/admin.py                   0      0   100%
+dashboard/apps.py                    6      0   100%
+dashboard/bot.py                    46      0   100%
+dashboard/context_processor.py       5      0   100%
+dashboard/data.py                    2      0   100%
+dashboard/factories.py              20      1    95%   25
+dashboard/managers.py               19      2    89%   20-21
+dashboard/models.py                 47      5    89%   30, 36, 55, 61-62
+dashboard/serializers.py            24      0   100%
+dashboard/signals.py                33      2    94%   20, 36
+dashboard/urls.py                    5      0   100%
+dashboard/views.py                  65      0   100%
+gunicorn_config.py                  37     37     0%   1-64
+manage.py                           12      2    83%   11-12
+menu/__init__.py                     0      0   100%
+menu/admin.py                        0      0   100%
+menu/apps.py                         3      3     0%   2-6
+menu/forms.py                       17      0   100%
+menu/models.py                       9      0   100%
+menu/urls.py                         6      0   100%
+menu/views.py                       32      0   100%
+--------------------------------------------------------------
+TOTAL                              696     72    90%

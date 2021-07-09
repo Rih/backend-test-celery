@@ -4,7 +4,7 @@ import logging
 from celery import Task
 # from celery.contrib import rdb
 from dashboard.models import Menu
-from dashboard.bot import SlackReminder
+from dashboard.bl.bot import SlackReminder
 from backend_test.celery import app
 
 logger = logging.getLogger(__name__)

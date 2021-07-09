@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 # Standard libs
-from .exceptions import ExistingUserEmailException
+from account.exceptions import ExistingUserEmailException
 from django.contrib.auth.models import User
 
 
-def exist_email_user(email):
+def exist_email_user(email: str) -> bool:
     try:
         User.objects.get(email=email.lower())
     except User.DoesNotExist:
@@ -14,7 +14,7 @@ def exist_email_user(email):
         return True
 
 
-def create_user(data):
+def create_user(data: dict) -> User:
     if not exist_email_user(data.get('email')):
         user = User.objects.create_user(
             first_name=data.get('first_name'),
@@ -25,4 +25,4 @@ def create_user(data):
         )
         return user
     else:
-        raise ExistingUserEmailException()
+        raise ExistingUserEmailException('email_registered')

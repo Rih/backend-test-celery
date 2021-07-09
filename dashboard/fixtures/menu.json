@@ -5,7 +5,8 @@
     "fields": {
       "meals": [1, 2],
       "scheduled_at": "2020-03-17",
-      "created_at": "2020-03-17T11:20:53"
+      "created_at": "2020-03-17T11:20:53",
+      "author_id": 1
     }
   },
   {
@@ -14,7 +15,8 @@
     "fields": {
       "meals": [1, 2],
       "scheduled_at": "2020-03-17",
-      "created_at": "2020-03-17T11:20:53"
+      "created_at": "2020-03-17T11:20:53",
+      "author_id": 1
     }
   },
   {
@@ -23,7 +25,8 @@
     "fields": {
       "meals": [1, 2],
       "scheduled_at": "2020-03-17",
-      "created_at": "2020-03-17T11:20:53"
+      "created_at": "2020-03-17T11:20:53",
+      "author_id": 1
     }
   },
   {
@@ -32,7 +35,8 @@
     "fields": {
       "meals": [1, 2],
       "scheduled_at": "2020-03-17",
-      "created_at": "2020-03-17T11:20:53"
+      "created_at": "2020-03-17T11:20:53",
+      "author_id": 1
     }
   },
   {
@@ -41,7 +45,8 @@
     "fields": {
       "meals": [1, 2],
       "scheduled_at": "2020-03-17",
-      "created_at": "2020-03-17T11:20:53"
+      "created_at": "2020-03-17T11:20:53",
+      "author_id": 1
     }
   }
 ]

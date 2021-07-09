@@ -156,6 +156,10 @@
             }
         }
 
+        function renderEmptyCard(){
+            return `<div class="alert alert-danger" role="alert">No Menu created yet</div>`;
+        }
+
         function renderCardContainer(rows){
             return rows.map( row => {
                 return (`<div class="card">
@@ -204,6 +208,10 @@
                     dataType: 'json',
                 }
             ).done((result, xhr, x2) => {
+                if(!result.length){
+                    $("#accordion").html(renderEmptyCard());
+                    return;
+                }
                 $("#accordion").html(renderCardContainer(result));
                 bindDeleteListener();
             });

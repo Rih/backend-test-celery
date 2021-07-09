@@ -8,7 +8,7 @@ from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 # Own libs
 from dashboard.models import Meal, Menu
-from dashboard.data import MODEL_TO_MODAL_NAMES
+from dashboard.bl.data import MODEL_TO_MODAL_NAMES
 from menu.models import Order
 # Create your views here.
 
@@ -28,11 +28,9 @@ meal_list_view = login_required(MealListView.as_view())
 class MenuListView(ListView):
     template_name = 'dashboard/menu_list.html'
     model = Menu
-    queryset = Menu.objects.latest_first()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = enumerate(context['object_list'])
         context['partial_names'] = MODEL_TO_MODAL_NAMES['menu']
         return context
 
@@ -76,6 +74,7 @@ class PartialView(TemplateView):
         model_name = self.request.GET.get('model')
         mode = self.request.GET.get('mode')  # edit or create
         context.update(MODEL_TO_MODAL_NAMES[model_name][mode])
+        context['author'] = self.request.user.id
         context['object'] = object
         return context
 
@@ -93,7 +92,7 @@ class MenuPartialView(PartialView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['meals'] = Meal.objects.actives()
+        context['meals'] = Meal.objects.actives(self.request.user)
         tomorrow = datetime.utcnow() + timedelta(hours=-4)
         context['tomorrow'] = tomorrow.strftime('%Y-%m-%d')
         return context

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from account.bl.data import ERROR_MESSAGES
+from menu.bl.data import ERROR_MESSAGES
 
 
-class ExistingUserEmailException(Exception):
+class InvalidMenuException(Exception):
     error_code = None
 
     def __init__(self, error_code):

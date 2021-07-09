@@ -17,22 +17,30 @@ from dashboard.models import Meal, Menu
 class MealViewSet(viewsets.ModelViewSet):
     serializer_class = MealModelSerializer
     permission_classes = [IsAuthenticated, ]
-    queryset = Meal.objects.actives()
+
+    def get_queryset(self):
+        return Meal.objects.actives(self.request.user)
 
 
 class MenuReadViewSet(viewsets.ModelViewSet):
     serializer_class = MenuModelListSerializer
     permission_classes = [IsAuthenticated, ]
-    queryset = Menu.objects.actives()
+
+    def get_queryset(self):
+        return Menu.objects.actives(self.request.user)
 
 
 class MenuViewListSet(viewsets.ModelViewSet):
     serializer_class = MenuModelListSerializer
     permission_classes = [IsAuthenticated, ]
-    queryset = Menu.objects.latest_first()
+
+    def get_queryset(self):
+        return Menu.objects.latest_first(self.request.user)
 
 
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuModelSerializer
     permission_classes = [IsAuthenticated, ]
-    queryset = Menu.objects.actives()
+
+    def get_queryset(self):
+        return Menu.objects.actives(self.request.user)

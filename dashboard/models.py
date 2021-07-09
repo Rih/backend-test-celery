@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import uuid
 from django.db import models
+from django.contrib.auth import get_user_model
 from dashboard.managers import MealManager, MenuManager
 from django.utils import timezone
 from celery.result import AsyncResult
@@ -15,6 +16,11 @@ class Meal(models.Model):
     objects = MealManager()
     modified_at = models.DateTimeField(auto_now=True, null=True)
     deleted_at = models.DateTimeField(null=True)
+    author = models.ForeignKey(
+        get_user_model(),
+        null=True,
+        on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return f'{self.id}:  {self.title}'
@@ -37,6 +43,11 @@ class Menu(models.Model):
     scheduled_at = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
+    author = models.ForeignKey(
+        get_user_model(),
+        null=True,
+        on_delete=models.SET_NULL
+    )
 
     def delete(self):
         # TODO: implement pre_delete to unlink a current task

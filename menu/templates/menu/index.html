@@ -10,10 +10,10 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Please choose one!</h6>
-                {% if form.errors.scheduled_at %}
-                <div class="alert alert-danger" role="alert">
-                    {{ form.errors.scheduled_at.0 }}
-                </div>
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
                 {% endif %}
             </div>
             <div class="card-body">
@@ -24,32 +24,25 @@
                             <div class="col-lg-12 mb-4">
                                 <h1>{{ menu.scheduled_at }}</h1>
                             </div>
-                            {% for i, meal in meals %}
+                            {% for meal in menu.meals.all %}
                                 <div class="col-lg-12 mb-4">
                                     <div class="card bg-info text-white shadow">
                                         <div class="card-body">
                                             <label>
                                                 <input id="id_meal_id" type="radio" name="meal" value="{{ meal.id }}" required />
-                                                Option {{ i|add:1 }}: {{ meal.title }}
+                                                Option {{ forloop.counter }}: {{ meal.title }}
                                             </label>
-
                                         </div>
                                     </div>
                                 </div>
-
                             {% endfor %}
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form.name }}
-                                {% if form.errors.name %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ form.errors.name.0 }}
-                                </div>
-                                {% endif %}
+                                {{ form.name|safe }}
                             </div>
                             <div class="col-md-6">
-                                {{ form.email }}
+                                {{ form.email|safe }}
                                 {% if form.errors.email %}
                                     <div class="alert alert-danger" role="alert">
                                         {{ form.errors.email.0 }}
@@ -67,16 +60,10 @@
                                 <button class="btn btn-success btn-block" type="submit">Send</button>
                              </div>
                         </div>
-                        </form>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
-  {% block js %}
-    <script>
-
-    </script>
-  {% endblock js %}
-

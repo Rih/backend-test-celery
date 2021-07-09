@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
 from .envtools import getenv
 
 # import sentry_sdk
@@ -44,10 +43,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    # 3rd parties
     "rest_framework",
     "django_extensions",
+    "drf_yasg",
     "backend_test.utils",
-    "django.contrib.sites",
+    # custom apps
     "captcha",
     "account",
     "dashboard",
@@ -156,7 +158,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 # STATICFILES_STORAGE = 'transcriptor.storage.StaticStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, "../collected_static")
-# STATIC_ROOT = os.path.join(BASE_DIR, "../static")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -170,11 +171,13 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #    'rest_framework.permissions.IsAuthenticated',
     # ],
+    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
     ],
 }
+
 
 if getenv("BROWSABLE_API_RENDERER", default=False, coalesce=bool):
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = REST_FRAMEWORK[
@@ -259,14 +262,14 @@ LOGGING = {
     },
 }
 
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = "/dashboard"
 
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "/"
 
-SLACK_OAUTH_TOKEN = os.getenv('SLACK_OAUTH_TOKEN', '')
-SLACK_CHANNEL_ID = os.getenv('SLACK_CHANNEL', 'C02757KU9DJ')  # meals
+SLACK_OAUTH_TOKEN = os.getenv("SLACK_OAUTH_TOKEN", "")
+SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL", 'C02757KU9DJ')  # meals
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -274,31 +277,31 @@ DEFAULT_FROM_EMAIL = 'noreply@sistematiza.cl'
 SERVER_EMAIL = 'noreply@sistematiza.cl'
 
 
-# EMAIL_HOST = 'smtp.google.com'
-EMAIL_HOST = 'smtp.mandrillapp.com'  # 'smtp-relay.sendinblue.com'
+# options
+# smtp-relay.sendinblue.com
+# smtp.mandrillapp.com
+# smtp.google.com
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.mandrillapp.com")
 
 # 9:15 AM
 SCHEDULE_MENU_TIME = {
-    'hours': 9,  # use: 0 to 23
-    'minutes': 45,  # use: 0 to 59
+    "hours": 9,  # use: 0 to 23
+    "minutes": 45,  # use: 0 to 59
 }
 
 # 11:00 AM
 MAX_HOUR_TO_ORDER = 11  # use: 0 to 23
 UTC_TZ_OFFSET = -4  # for chile
 
-# EMAIL_USE_SSL = True
 # EMAIL_PORT = 465  # SSL
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587  # TLS
-EMAIL_HOST_USER = 'rodrigo@sistematiza.cl'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_PORT = int(os.getenv("EMAIL_HOST_PORT", 587))  # TLS
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "rodrigo@sistematiza.cl")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 
 SITE_ID = 1
 
 CELERY_TASK_TRACK_STARTED = True
 
-# Modificar
-
-RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '')
-RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '')
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY", "")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY", "")

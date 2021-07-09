@@ -1,0 +1,34 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "username": "root@admin.cl",
+    "first_name": "RooT",
+    "last_name": "root",
+    "email": "root@admin.cl",
+    "password": "pbkdf2_sha256$180000$ChgQlrOx4uHZ$Jdq+KRmYeYDjRRtRXL147OWePBd0xF0XTecO+sKqcVU=",
+    "is_superuser": true,
+    "is_staff": true,
+    "date_joined": "2021-07-06T03:11:12.946"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$180000$ChgQlrOx4uHZ$Jdq+KRmYeYDjRRtRXL147OWePBd0xF0XTecO+sKqcVU=",
+    "last_login": "2021-07-06T03:17:23.107",
+    "is_superuser": false,
+    "username": "drigox90rih@gmail.com",
+    "first_name": "Vico",
+    "last_name": "C",
+    "email": "drigox90rih@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-07-06T03:11:12.946",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

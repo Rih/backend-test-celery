@@ -5,7 +5,7 @@
 from unittest.mock import patch
 from django.test import TestCase, tag
 # # Own libs
-from dashboard.bot import SlackBot, SlackReminder
+from dashboard.bl.bot import SlackBot, SlackReminder
 from account.factories import UserFactory
 from dashboard.tests.mock import RequestMock
 
@@ -14,6 +14,7 @@ from dashboard.tests.mock import RequestMock
 class SlackbotTest(TestCase):
 
     fixtures = [
+        'user',
         'meal',
         'menu',
         'order',

@@ -11,7 +11,7 @@ urlpatterns = [
     path(
         '',
         TemplateView.as_view(
-            template_name='menu/landing.html'
+            template_name='landing.html'
         ),
         name='index'
     ),

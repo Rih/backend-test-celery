@@ -12,7 +12,6 @@ from .models import EmailToken
 
 
 @override_settings(
-    MEDIA_ROOT='/app/test_media/',
     EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 )
 class AccountTest(TestCase):

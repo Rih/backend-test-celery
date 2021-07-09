@@ -3,28 +3,32 @@
     "model": "dashboard.meal",
     "pk": 1,
     "fields": {
-      "title": "Meat with Dessert"
+      "title": "Meat with Dessert",
+      "author_id": 1
     }
   },
   {
     "model": "dashboard.meal",
     "pk": 2,
     "fields": {
-      "title": "Rice with Chicken"
+      "title": "Rice with Chicken",
+      "author_id": 1
     }
   },
   {
     "model": "dashboard.meal",
     "pk": 3,
     "fields": {
-      "title": "Spaghetti with tomato"
+      "title": "Spaghetti with tomato",
+      "author_id": 1
     }
   },
   {
     "model": "dashboard.meal",
     "pk": 4,
     "fields": {
-      "title": "Vegan"
+      "title": "Vegan",
+      "author_id": 1
     }
   }
 ]

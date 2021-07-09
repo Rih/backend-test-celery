@@ -22,9 +22,8 @@ class CelerySettings:
     # Task execution settings
     # https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-execution-settings
     CELERY_ALWAYS_EAGER = getenv("CELERY_ALWAYS_EAGER", default="False", coalesce=bool)
-    # CELERY_ALWAYS_EAGER = False
     CELERY_EAGER_PROPAGATES_EXCEPTIONS = getenv(
-        "CELERY_EAGER_PROPAGATES_EXCEPTIONS", default="False", coalesce=bool
+        "CELERY_EAGER_PROPAGATES_EXCEPTIONS", default="FalseF", coalesce=bool
     )
     CELERY_IGNORE_RESULT = getenv("CELERY_IGNORE_RESULT", default="True", coalesce=bool)
     CELERY_STORE_ERRORS_EVEN_IF_IGNORED = True

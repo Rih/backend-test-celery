@@ -12,6 +12,7 @@ from account.factories import UserFactory
 class DashboardTest(TestCase):
 
     fixtures = [
+        'user',
         'meal',
         'menu',
         'order',

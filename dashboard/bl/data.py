@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 MODEL_TO_MODAL_NAMES = {
     'meal': {

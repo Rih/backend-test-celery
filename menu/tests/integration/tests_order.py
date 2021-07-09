@@ -16,6 +16,7 @@ from dashboard.models import Menu, Meal
 class OrderTest(TestCase):
 
     fixtures = [
+        'user',
         'meal',
         'menu',
         'order',
@@ -37,10 +38,37 @@ class OrderTest(TestCase):
         for meal in menu.meals.all():
             self.assertContains(result, meal.title)
 
-    @tag('menu_public_post_errors')
-    @patch('dashboard.signals.current_date')
-    def tests_menu_post_errors(self, nowmock):
-        # python manage.py test --tag=menu_public_post_errors
+    @tag('menu_public_post_error_email')
+    def tests_menu_post_error_email(self):
+        # python manage.py test --tag=menu_public_post_error_email
+        menu = Menu.objects.get(pk=1)
+        url = reverse('menu:menu_list', kwargs={
+            'pk': menu.pk
+        })
+        meal = menu.meals.all()[0]
+        payload = {
+            'meal': meal.pk,
+            'name': 'My name',
+            'email': 'Invalid Email',
+            'suggestion': 'suggest',
+        }
+        result = self.client.post(
+            url,
+            urlencode(payload),
+            content_type='application/x-www-form-urlencoded'
+        )
+        # invalid email case
+        self.assertEquals(result.status_code, 200)
+        # self.assertContains(result, 'Enter a valid email address.')
+
+    @tag('menu_public_post_error_menu_invalid')
+    @override_settings(
+        MAX_HOUR_TO_ORDER=1,
+        UTC_TZ_OFFSET=0,
+    )
+    @patch('dashboard.bl.utils.get_current_date')
+    def tests_menu_post_error_menu_invalid(self, nowmock):
+        # python manage.py test --tag=menu_public_post_error_menu_invalid
         menu = Menu.objects.get(pk=1)
         mock_time = dt.combine(
             dt.now(),
@@ -54,7 +82,7 @@ class OrderTest(TestCase):
         payload = {
             'meal': meal.pk,
             'name': 'My name',
-            'email': 'My email',
+            'email': 'email@test.com',
             'suggestion': 'suggest',
         }
         result = self.client.post(
@@ -62,19 +90,36 @@ class OrderTest(TestCase):
             urlencode(payload),
             content_type='application/x-www-form-urlencoded'
         )
-        # invalid email case
-        self.assertEquals(result.status_code, 200)
-        self.assertContains(result, 'Enter a valid email address.')
-        payload['email'] = 'email@test.com'
-        result = self.client.post(
-            url,
-            urlencode(payload),
-            content_type='application/x-www-form-urlencoded'
-        )
         # invalid case
+        self.assertEquals(result.status_code, 200)
         self.assertContains(
             result, 'Menu is from the past, are you a time traveler?'
         )
+
+    @tag('menu_public_post_error_invalid_time')
+    @override_settings(
+        MAX_HOUR_TO_ORDER=1,
+        UTC_TZ_OFFSET=0,
+    )
+    @patch('dashboard.bl.utils.get_current_date')
+    def tests_menu_post_error_invalid_time(self, nowmock):
+        # python manage.py test --tag=menu_public_post_error_invalid_time
+        menu = Menu.objects.get(pk=1)
+        mock_time = dt.combine(
+            dt.now(),
+            (dt.min + timedelta(hours=9)).time()
+        )
+        nowmock.return_value = mock_time
+        url = reverse('menu:menu_list', kwargs={
+            'pk': menu.pk
+        })
+        meal = menu.meals.all()[0]
+        payload = {
+            'meal': meal.pk,
+            'name': 'My name',
+            'email': 'email@test.com',
+            'suggestion': 'suggest',
+        }
         new_menu = MenuFactory(
             scheduled_at=dt.now().date(),
             meals=[1, 2],
@@ -87,6 +132,7 @@ class OrderTest(TestCase):
             urlencode(payload),
             content_type='application/x-www-form-urlencoded'
         )
+        self.assertEquals(result.status_code, 200)
         self.assertContains(
             result, 'Not a valid time'
         )
@@ -95,7 +141,7 @@ class OrderTest(TestCase):
     @override_settings(
         MAX_HOUR_TO_ORDER=dt.now().hour + 1
     )
-    @patch('dashboard.signals.current_date')
+    @patch('dashboard.bl.utils.get_current_date')
     def tests_menu_post_success(self, nowmock):
         # python manage.py test --tag=menu_public_post_success
         mock_time = dt.combine(
@@ -135,4 +181,4 @@ class OrderTest(TestCase):
         )
         # invalid email
         self.assertEquals(result.status_code, 200)
-        self.assertContains(result, 'DONE')
+        self.assertContains(result, 'We will inform you when your meal is ready.')
