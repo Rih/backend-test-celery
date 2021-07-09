@@ -283,7 +283,7 @@ SERVER_EMAIL = 'noreply@sistematiza.cl'
 # smtp.google.com
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.mandrillapp.com")
 
-# 9:15 AM
+# 9:45 AM
 SCHEDULE_MENU_TIME = {
     "hours": 9,  # use: 0 to 23
     "minutes": 45,  # use: 0 to 59

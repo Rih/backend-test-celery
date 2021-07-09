@@ -119,4 +119,31 @@ m* Run inside backend container: `dev up`
 
 * Run inside backend container: `sh bin/run-coverages.sh report_name_file.txt`
 
+### About schedule a Menu
 
+* in backend_test/settings.py you can change these values
+
+```
+# 9:15 AM
+SCHEDULE_MENU_TIME = {
+    "hours": 9,  # use: 0 to 23
+    "minutes": 15,  # use: 0 to 59
+}
+
+# 11:00 AM
+MAX_HOUR_TO_ORDER = 11  # use: 0 to 23
+UTC_TZ_OFFSET = -4  # for chile
+```
+
+* It's used as follow:
+    - SCHEDULE_MENU_TIME it's the time when notification is 
+    about to trigger if you schedule the menu days before (Create button)
+    
+    - If you create a menu for the current date (TODAY) or in the past (weird case), 
+    it'll omit SCHEDULE_MENU_TIME and notification will be sent 5 minutes later.
+    
+    - If you set MAX_HOUR_TO_ORDER, it's the time to validate an order for employees
+    past the time, it throws an exception message in form "Not valid time"
+    - UTC_TZ_OFFSET is used to change the UTC time. It's a lazy way to handle dates but it works for now.
+    
+    - Note: Please use valid numbers as shows in comments
